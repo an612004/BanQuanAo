@@ -1,0 +1,49 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Colors>
+
+@{
+    ViewData["Title"] = "Bảng màu sắc";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Danh sách màu</h4>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách màu</a></li>
+        </ul>    
+</div>
+<p>
+    <a asp-action="Create"  class="btn btn-success m-1">Thêm mới màu</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+           
+            <th>
+               Tên màu
+            </th>
+            <th>
+                Mã màu
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td >
+                @Html.DisplayFor(modelItem => item.ColorName)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.ColorCode)
+            </td>
+            <td >
+                <a class="btn btn-primary btn-sm " type="button" href="Update/@item.ColorId" title="Sửa"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-warning btn-sm"  type="button" href="Details/@item.ColorId" title="Chi tiết"><i class="fas fa-info-circle"></i></a>
+                <a class="btn btn-danger btn-sm " type="button" href="Remove/@item.ColorId" title="Xóa"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

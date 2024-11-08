@@ -1,0 +1,46 @@
+﻿@model BanQuanAo.Share.Models.Size
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách size</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Create">Thêm mới</a></li>
+        </ul>    
+</div>
+<hr />
+<div class="row">
+    <div class="container" >
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label class="control-label">Tên size</label>
+                <input asp-for="SizeName" class="form-control" />
+                <span asp-validation-for="SizeName" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label class="control-label">Chiều rộng</label>
+                <input asp-for="Width" class="form-control" />
+                <span asp-validation-for="Width" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Chiều cao</label>
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <button class="btn btn-success m-1" type="submit" >Tạo</button>
+                <a class="btn btn-secondary" asp-action="Show" >Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

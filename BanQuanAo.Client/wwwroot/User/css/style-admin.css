@@ -1,0 +1,137 @@
+﻿/*modal input*/
+.form-modal-input {
+    border: none !important;
+    border-radius: 6px !important;
+    background: rgb(245, 245, 245) !important;
+}
+.custom-select-product{
+    cursor: pointer;
+    width: 5rem;
+}
+.form-control-description {
+    border-radius: 8px;
+    border: none;
+    height: 100px !important;
+    max-height: 100px !important;
+}
+.form-custom-select button {
+    border-radius: 8px;
+    height: 40px;
+    background-color: rgb(245, 245, 245);
+    border: none;
+}
+    .form-custom-select button span {
+        margin-top: 0.5rem;
+        border-radius: 8px;
+        background-color: transparent;
+    }
+.form-check-lbl{
+    display: flex;
+    align-items: end;
+}
+.form-custom-check {
+    background-color: #576ee0 !important;
+    width: 25px;
+    height: 25px;
+}
+.form-check-input-span{
+    margin-left: 1rem;
+}
+/*modal*/
+.modal-dialog {
+    max-width: initial;
+}
+
+.modal-content {
+    border: none;
+    background-color: transparent;
+}
+
+.modal-body {
+    border-radius: 18px;
+    background-color: #fff;
+}
+
+.custom-btn-modal {
+    border: none;
+    font-size: 36px;
+    color: #999;
+}
+
+    .custom-btn-modal:hover {
+        border: none;
+        transform: scale(1.25);
+        color: #576ee0;
+    }
+
+.container-modal-small {
+    max-width: 700px;
+}
+
+.custom-header-modal {
+    display: flex;
+    justify-content: space-between;
+}
+
+.custom-icon span {
+    border: none;
+    background-color: transparent;
+}
+
+.container-modal-medium .form-control,
+.container-modal-large .form-control {
+    border: none !important;
+    border-radius: 6px !important;
+    background: rgb(245, 245, 245) !important;
+}
+
+.container-modal-large {
+    max-width: 1100px;
+}
+
+.container-modal-medium {
+    max-width: 800px;
+}
+
+/*.container-modal-large */ .form-checkbox-input {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border-radius: 18px;
+}
+
+.modal-content .custom-detail {
+    padding: 1rem;
+}
+/*......*/
+.custom-checkbox-index input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 8px !important;
+    background-color: #576ee0 !important;
+    color: white !important;
+}
+
+.users-table-ad-index {
+    background: #fff;
+    border-radius: 18px;
+    height: 100%;
+    padding: 1rem;
+}
+
+    .users-table-ad-index .users-table-info {
+        border-top: none;
+    }
+
+    /*report*/
+.img-tbl-report {
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+}
+
+    .img-tbl-report img {
+        width: 50% !important;
+    }

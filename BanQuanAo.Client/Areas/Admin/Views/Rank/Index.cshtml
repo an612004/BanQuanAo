@@ -1,0 +1,106 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Rank>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<h4>Danh sách xếp hạng</h4>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Index">Danh sách xếp hạng</a></li>
+        </ul>    
+</div>
+<p>
+    <a asp-action="CreateRank" class="btn btn-success m-1">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên xếp hạng
+            </th>
+            <th>
+                Điểm nhỏ nhất để lên
+            </th>
+            <th>
+                Điểm lên bậc
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PointsMin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PoinsMax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                    @Html.ActionLink("Sửa", "EditRank", new {  area="Admin", id=item.Id  }, new {@class="btn btn-warning btn-sm"}) 
+                    @Html.ActionLink("Xoá", "DeleteRank", new {  area="Admin", id=item.Id  }, new {@class="btn btn-danger btn-sm"})     
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<!--
+  MODAL
+-->
+<div class="modal fade" id="Create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+     <form asp-action="CreateRank" method="post">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group  col-md-12">
+                            <span class="thong-tin-thanh-toan">
+                                <h5>Tạo Xếp hạng mới</h5>
+                            </span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập tên xếp hạng mới</label>
+                            <input class="form-control" type="text" required name="rankName">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập điểm nhỏ nhất</label>
+                            <input class="form-control" type="text" required name="pointMin">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập điểm lớn nhất</label>
+                            <input class="form-control" type="text" required name="pointMax">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Mô tả chi tiết</label>
+                            <input class="form-control" type="text" required name="description">
+                        </div>
+
+                    </div>
+                    <BR>
+                    <button class="btn btn-save" type="submit" >Lưu lại</button>
+                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+     </form>
+    
+</div>
+<!--
+  MODAL
+-->

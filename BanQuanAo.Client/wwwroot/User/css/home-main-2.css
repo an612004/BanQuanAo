@@ -1,0 +1,139 @@
+﻿
+/*badge*/
+.single-product img {
+    margin-bottom: 0px !important;
+}
+
+.img-fluid {
+    position: relative;
+}
+
+.bagde-sale {
+    position: absolute;
+    top: 0px;
+    width: 150px;
+    height: 40px;
+    background: #FF512F;
+    background: -webkit-linear-gradient(to left, #DD2476, #FF512F);
+    background: linear-gradient(to left, #DD2476, #FF512F);
+    border-radius: 8px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-txt {
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 2px;
+    font-size: 16px;
+    text-align: center;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+/*exclusive sale off index*/
+.exclusive-deal-txt h1 {
+    font-weight: 900;
+    letter-spacing: 5px;
+}
+
+.exclusive-deal-area .time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .exclusive-deal-area .time .time-colon {
+        display: flex;
+        align-items: center;
+    }
+
+        .exclusive-deal-area .time .time-colon .time-text {
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background: rgb(248,240,227);
+        }
+
+            .exclusive-deal-area .time .time-colon .time-text .num {
+                font-size: 32px;
+                font-weight: bold;
+            }
+
+            .exclusive-deal-area .time .time-colon .time-text .text {
+                margin-top: 0.5rem;
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+
+        .exclusive-deal-area .time .time-colon .colon {
+            padding: 0 0.5rem;
+            font-size: 36px;
+            font-weight: bolder;
+        }
+
+.img-fluid {
+    z-index: 9999 !important;
+    margin-bottom: 0 !important;
+}
+
+.badge-overlay {
+    z-index: 9999 !important;
+}
+
+.img-prd-animation {
+    padding: 2px;
+}
+
+    .img-prd-animation:hover {
+        z-index: 99 !important;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+        .img-prd-animation:hover::before {
+            position: absolute;
+            content: '';
+            width: 100px;
+            height: 400px;
+            z-index: 999 !important;
+            background: linear-gradient(#99FEFF, #B983FF);
+            animation: animate 3s linear infinite;
+            border-radius: 10px;
+        }
+
+        .img-prd-animation:hover::after {
+            position: absolute;
+            content: '';
+            inset: 4px;
+            background: #fff;
+        }
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/*21/12*/
+.img-cart-inx {
+    z-index: 89 !important;
+}
+
+
+.header_area {
+    z-index: 99 !important;
+}
+.features-area {
+    margin-top: -13%;
+}

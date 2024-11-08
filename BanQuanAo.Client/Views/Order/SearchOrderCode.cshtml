@@ -1,0 +1,40 @@
+﻿<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-login">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tra cứu đơn hàng</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <img class="img-fluid" src="https://cdn.tgdd.vn/2022/10/banner/TGDD-540x270.png" alt="Banner">
+        </div>
+        <div class="col-6">
+            <form asp-controller="Order" asp-action="allOrderCode" method="get">
+                <div class="card">
+                    <div class="card-header">
+                        <b>Tra cứu thông tin đơn hàng</b>
+                    </div>
+                    <div class="card-body">
+                        <input type="text" name="ordercode" class="form-control" chass="searchstring_input" placeholder="Nhập mã đơn hàng">
+                        <button type="submit" class="btn btn-info mt-3">Tra cứu</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

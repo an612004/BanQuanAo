@@ -1,0 +1,253 @@
+﻿@using BanQuanAo.Share.Models;
+@using BanQuanAo.Share.ViewModels;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    List<ProductDetailVM> productDetail = ViewData["productDetail"] as List<ProductDetailVM>;
+    List<ProductImage> ProductImage = ViewData["ProductImage"] as List<ProductImage>;
+    List<ProductVM> ProductNew = ViewData["NewestProducts"] as List<ProductVM>;
+}
+<!-- start banner Area -->
+<section class="banner-area">
+    <div class="container">
+        <div class="row fullscreen ">
+            <div class="col-lg-12">
+                <!-- hero section -->
+                <div class="hero">
+                    <div class="slider">
+                        <div class="">
+                            <!-- slide item -->
+                            <div class="slide active col-lg-12">
+                                <div class="info col-lg-6">
+                                    <div class="info-content">
+                                        <p class="top-down">
+                                            Sản phẩm mới
+                                        </p>
+                                        <h2 class="top-down trans-delay-0-2">
+                                            ANBISHOP
+                                        </h2>
+                                        <div class="top-down trans-delay-0-6 d-flex align-items-center">
+                                            <a href="#" class="btn-icon"> <i class='bx bx-expand-alt bx-sm'></i></a>
+                                            <span class="btn-flat btn-hover">
+                                                Xem sản phẩm
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="img top-down col-lg-6">
+                                    <div class="img-shape"></div>
+                                    <img style="height:240px;width:500px" src="~/User/images/banner/layout1.jpg" alt=""> 
+                                </div>
+                            </div>
+                            <!-- end slide item -->
+                            <!-- slide item -->
+                            <div class="slide col-lg-12">
+                                <div class="info col-lg-6">
+                                    <div class="info-content">
+                                        <p class="top-down">
+                                            Sản phẩm mới
+                                        </p>
+                                        <h2 class="top-down trans-delay-0-2">
+                                            Thời Trang Hiện Đại
+                                        </h2>
+                                        <div class="top-down trans-delay-0-6 d-flex align-items-center">
+                                            <a href="#" class="btn-icon"> <i class='bx bx-expand-alt bx-sm'></i></a>
+                                            <span class="btn-flat btn-hover">
+                                                Xem sản phẩm
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="img right-left col-lg-6">
+                                    <div class="img-shape"></div>
+                                    <img style="height:240px;width:500px" src="~/User/images/banner/layout2.jpg" alt="">
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <!-- slider controller -->
+                        <button class="slide-controll slide-next">
+                            <i class='bx bxs-chevron-right'></i>
+                        </button>
+                        <button class="slide-controll slide-prev">
+                            <i class='bx bxs-chevron-left'></i>
+                        </button>
+                        <!-- end slider controller -->
+                    </div>
+                </div>
+                <!-- end hero section -->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@* class : owl-carousel*@
+<section class="active-product-area section_gap">
+    <!-- single product slide -->
+    <div class="single-product-slider">
+        <div class="container">
+            <div class="row justify-content-center" data-aos="fade-up">
+                <div class="col-lg-6 text-center">
+                    <div class="section-title">
+                        <h1><a asp-controller="Product" asp-action="ListProduct" class="text-decoration-none text-link-hover">Sản phẩm</a></h1>
+                        <p>Các sản phẩm mới.</p>
+                    </div>
+                </div>
+            </div>
+           <div class="row" data-aos="fade-up">
+                @foreach (var item in ProductNew)
+                {
+                    IEnumerable<ProductDetailVM> LstProductDetail = productDetail.Where(c => c.ProductId == item.Id);
+
+                    var productDetailID = LstProductDetail.First().Id; // lấy id productdetail đầu tiên
+
+                    var lstProductImage = ProductImage.Where(c => c.ProductDetailId == productDetailID); // lấy list img
+
+                    var imgFirst = lstProductImage.First().ImageUrl; 
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-product">
+                            <a href="/Product/ProductDetail/@item.Id">
+                                <div class="img-prd-animation">
+                                    <div class="img-fluid">
+                                        <img class="" src="@(Configuration["BaseAddress"]+imgFirst)" alt="" />
+                                        
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="product-details mt-3">
+                                <h6 class="custom-title-product">
+                                    <a class="text-decoration-none text-link-hover" data-toggle="tooltip" title="@item.ProductName" asp-action="ProductDetail" asp-route-id="@item.Id">
+                                        @Html.DisplayFor(modelItem => item.ProductName)
+                                    </a>
+                                </h6>
+                                <div class="price d-flex">
+                                    @if (item.MinPrice == item.MaxPrice)
+                                    {
+
+                                        <h6 class="d-flex">@item.MinPrice?.ToString("n0") đ<span class="text-lowercase"></span></h6>
+                                    }
+                                    else
+                                    {
+
+                                        <h6 class="d-flex">@item.MinPrice?.ToString("n0") đ  - @item.MaxPrice?.ToString("n0") đ <span class="text-lowercase"></span></h6>
+                                    }
+                                </div>
+                                <div class="prd-bottom">
+                                    <a class="addProduct social-info" href="/Product/ProductDetail/@item.Id">
+                                        <span class='bx bx-basket'></span>
+                                        <p class="hover-text">Chi tiết</p>
+                                    </a>
+                                    <a href="/Product/ProductDetail/@item.Id" class="social-info">
+                                        <span class='bx bx-move'></span>
+                                        <p class="hover-text">Xem Thêm</p>
+                                    </a>
+                                    <a class="social-info">
+                                        <span class='bx bx-share bx-rotate-180'></span>
+                                        <p class="hover-text">Chia sẻ</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- end product Area -->
+<!-- start features Area -->
+<section class="features-area section_gap" data-aos="fade-up">
+    <div class="container">
+        <div class="row features-inner shadow-lg">
+            <!-- single features -->
+            <div class="col-lg-3 col-md-6 col-sm-6" data-aos="zoom-in">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <img src="~/User/images/features/f-icon1.png" alt="">
+                    </div>
+                    <h6>Giao Hàng Nhanh Chóng</h6>
+                    <p>Sản phẩm được vận chuyển nhanh.</p>
+                </div>
+            </div>
+            <!-- single features -->
+            <div class="col-lg-3 col-md-6 col-sm-6" data-aos="zoom-in">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <img src="~/User/images/features/f-icon2.png" alt="">
+                    </div>
+                    <h6>Đổi Trả Hàng</h6>
+                    <p>Sản phẩm được đổi trả trong 3 ngày.</p>
+                </div>
+            </div>
+            <!-- single features -->
+            <div class="col-lg-3 col-md-6 col-sm-6" data-aos="zoom-in">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <img src="~/User/images/features/f-icon3.png" alt="">
+                    </div>
+                    <h6>Hỗ trợ 24/7</h6>
+                    <p>Luôn có mặt để hổ trợ khách hàng.</p>
+                </div>
+            </div>
+            <!-- single features -->
+            <div class="col-lg-3 col-md-6 col-sm-6" data-aos="zoom-in">
+                <div class="single-features">
+                    <div class="f-icon">
+                        <img src="~/User/images/features/f-icon4.png" alt="">
+                    </div>
+                    <h6>Giao Hàng Nhận Tiền</h6>
+                    <p>Thanh toán tiền mặt sau khi nhận.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end features Area -->
+<!-- Start category brand Area -->
+
+<!-- End category brand Area -->
+<!-- Start exclusive deal Area -->
+<section class="exclusive-deal-area" data-aos="fade-up">
+    <div class="container">
+        <div class="exclusive-deal-ctn row justify-content-center align-items-center">
+            <div class="col-lg-12 no-padding exclusive-left">
+                <div class="row">
+                    <div class="exclusive-deal-txt col-lg-10">
+                        <h1>SALE OFF</h1>
+
+                        <div class="time mt-4">
+                            <div class="time-colon">
+                                <div class="time-text">
+                                    <span class="num hour_num">1</span>
+                                    <span class="text">Giờ</span>
+                                </div>
+                                <span class="colon">:</span>
+                            </div>
+                            <div class="time-colon">
+                                <div class="time-text">
+                                    <span class="num min_num">45</span>
+                                    <span class="text">Phút</span>
+                                </div>
+                                <span class="colon">:</span>
+                            </div>
+                            <div class="time-colon">
+                                <div class="time-text">
+                                    <span class="num sec_num">45</span>
+                                    <span class="text">Giây</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a asp-controller="Product" asp-action="ListProduct" class="primary-btn">Xem ngay<i class='bx bx-send primary-btn-icon'></i></a>
+                    </div>
+                    <div class="exclusive-deal-img col-lg-2">
+                        <img src="~/User/images/exclusive.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End exclusive deal Area -->
+<!-- Start brand Area -->

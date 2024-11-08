@@ -1,0 +1,123 @@
+﻿@using BanQuanAo.Share.Models;
+@model IEnumerable<BanQuanAo.Share.Models.Product>
+
+@{
+    ViewData["Title"] = "GetAllProduct";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+    var proCategory = ViewData["productCategory"] as List<Category>;
+    var proBrand = ViewData["productBrand"] as List<Brand>;
+    var proMaterial = ViewData["productMaterial"] as List<Material>;
+}
+
+<h4>Danh sách sản phẩm</h4>
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="GetAllProduct">Danh sách sản phẩm</a></li>
+    </ul>
+</div>
+<p>
+    <a asp-action="CreateProduct" class="btn btn-success m-1">Thêm mới </a>
+</p>
+<table class="table" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Số lượng tồn
+            </th>
+            <th>
+                Loại sản phẩm
+            </th>
+            <th>
+                Thương hiệu
+            </th>
+            <th>
+                Chất liệu
+            </th>
+
+            <th>
+                Ngày nhập
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailableQuantity)
+                </td>
+                <td>
+                    @foreach (var x in proCategory)
+                    {
+                        if (item.CategoryId == x.Id)
+                        {
+                            @Html.DisplayFor(modelItem => x.CategoryName)
+                        }
+                    }
+                    @* @Html.DisplayFor(modelItem => item.CategoryId) *@
+                </td>
+                <td>
+                    @foreach (var x in proBrand)
+                    {
+                        if (item.BrandId == x.Id)
+                        {
+                            @Html.DisplayFor(modelItem => x.BrandName)
+                        }
+                    }
+                    @* @Html.DisplayFor(modelItem => item.BrandId) *@
+                </td>
+                <td>
+                    @foreach (var x in proMaterial)
+                    {
+                        if (item.MaterialId == x.Id)
+                        {
+                            @Html.DisplayFor(modelItem => x.MaterialName)
+                        }
+                    }
+                    @* @Html.DisplayFor(modelItem => item.MaterialId) *@
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Create_At)
+                </td>
+                <td>
+                    @if (item.Status == true)
+                    {
+                        <p style="color:green">Đang bán</p>
+                    }
+                    else
+                    {
+                        <p style="color:red">Ngừng bán</p>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Biến thể", "ProductDetail", new {  id=item.Id  }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Sửa", "EditProduct", new {  id=item.Id  }, new { @class = "btn btn-primary btn-sm" })
+                    @if (item.Status == true)
+                    {
+                        <button class="btn btn-danger">
+                            @Html.ActionLink("Ngừng bán", "ChangeStatus",new { idsp =item.Id,status=false }, new { @style = "color:white;" })
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success">
+                            @Html.ActionLink("Mở bán", "ChangeStatus", new { idsp =item.Id,status=true }, new { @style = "color:white;" })
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

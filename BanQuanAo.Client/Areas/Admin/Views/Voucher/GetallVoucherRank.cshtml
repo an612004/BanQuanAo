@@ -1,0 +1,101 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Voucher>
+
+@{
+    ViewData["Title"] = "GetallVoucherRank";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Danh sách voucher</h4>
+<h1>Đang hiện full</h1>
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="GetallVoucherRank">Danh sách voucher dành cho rank</a></li>
+    </ul>
+</div>
+<p>
+    <a asp-action="AddVoucherForRank">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Giá trị voucher
+            </th>
+            <th>
+                Hình thức giảm
+            </th>
+            <th>
+                Giá trị đơn hàng
+            </th>
+            <th>
+                Ngày bắt đầu
+            </th>
+            <th>
+                Ngày kết thúc
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    @if (item.Discount_Type == 1)
+                    {
+                        <p>Giảm %</p>
+                    }
+                    else if (item.Discount_Type == 0)
+                    {
+                        <p>Giảm theo tiền</p>
+                    }
+
+                <td>
+                        @Html.DisplayFor(modelItem => item.Minimum_order_value)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Start_Date)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.End_Date)
+                </td>
+                <td>
+                        @if (item.Status == true)
+                        {
+                        <p style="color:green">Sử dụng</p>
+                        }
+                        else
+                        {
+                        <p style="color:red">Ngừng áp dụng</p>
+                        }
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" type="button" href="editVoucher/@item.Id" title="Sửa"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-warning btn-sm" type="button" href="detailVoucher/@item.Id" title="Chi tiết"><i class="fas fa-info-circle"></i></a>
+                    <a class="btn btn-danger btn-sm " type="button" href="DeleteVoucher/@item.Id" title="Xóa"><i class="fas fa-trash"></i></a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Adress>
+
+@{
+    ViewData["Title"] = "getall";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>getall</h1>
+
+<p>
+    <a asp-action="CreateAdress">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Province)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.District)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ward)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Province)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ward)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "editAdress", new { id=item.Id}) |
+                    @Html.ActionLink("Details", "detailAdress", new {  id=item.Id}) |
+                    @Html.ActionLink("Delete", "deleteAdress", new { id=item.Id})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

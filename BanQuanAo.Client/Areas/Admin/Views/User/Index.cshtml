@@ -1,0 +1,171 @@
+﻿@using BanQuanAo.Share.Models
+@model IEnumerable<BanQuanAo.Share.ViewModels.UserViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Danh sách người dùng</h4>
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="Index">Danh sách người dùng</a></li>
+    </ul>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            @*  <th>
+            Role
+            </th>
+            *@
+            <th>
+                Tên đăng nhập
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Số điện thoại
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+
+
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+
+            </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfBirth)
+                </td>
+                <td>
+                    <a asp-action="ChangeRole" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#changrole" data-username="@item.UserName">Đổi quyền hạn</a>
+                    @Html.ActionLink("Xoá", "DeleteUser", new { userName = item.UserName }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+            <!--
+              MODAL
+            -->
+            <div class="modal fade" id="changrole" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                 data-backdrop="static" data-keyboard="false">
+                <form asp-action="ChangeRole" method="post">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="form-group  col-md-12">
+                                        <span class="thong-tin-thanh-toan">
+                                            <h5>Chọn Role</h5>
+                                        </span>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label">Quyền</label>
+                                        <select class="form-control" name="roleName" required>
+                                            <option value="">-- Chọn quyền --</option>
+                                            @foreach (var role in (List<string>)ViewData["RoleList"])
+                                            {
+                                                <option value="@role">@role</option>
+                                               
+                                            }
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="userName" id="hiddenUserName" />
+                                </div>
+                                <BR>
+                                <button class="btn btn-success m-1" type="submit">Lưu lại</button>
+                                <a class="btn btn-secondary" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                <BR>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!--
+              MODAL
+            -->
+        }
+    </tbody>
+</table>
+<!--
+  MODAL
+-->
+<div class="modal fade" id="Create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <form asp-action="CreateRank" method="post">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group  col-md-12">
+                            <span class="thong-tin-thanh-toan">
+                                <h5>Tạo Xếp hạng mới</h5>
+                            </span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập tên xếp hạng mới</label>
+                            <input class="form-control" type="text" required name="rankName">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập điểm nhỏ nhất</label>
+                            <input class="form-control" type="text" required name="pointMin">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập điểm lớn nhất</label>
+                            <input class="form-control" type="text" required name="pointMax">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Mô tả chi tiết</label>
+                            <input class="form-control" type="text" required name="description">
+                        </div>
+
+                    </div>
+                    <BR>
+                    <button class="btn btn-save" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<!--
+  MODAL
+-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#changrole').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Nút đã được nhấn
+            var userName = button.data('username'); // Lấy giá trị UserName từ data-attribute
+
+            // Gán giá trị UserName vào trường ẩn trong modal
+            var modal = $(this);
+            modal.find('#hiddenUserName').val(userName);
+        });
+    });
+</script>

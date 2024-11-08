@@ -1,0 +1,69 @@
+﻿@model BanQuanAo.Share.Models.Post
+@using BanQuanAo.Share.Models
+@{
+    ViewData["Title"] = "Chi tiết bài viết";
+    List<User> lstUser = ViewBag.user as List<User>;
+}
+<style>
+    .article {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .article-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .article-meta {
+        font-size: 14px;
+        color: #666666;
+        margin-bottom: 10px;
+    }
+
+    .article-date {
+        margin-right: 10px;
+    }
+
+    .article-author {
+        font-style: italic;
+    }
+
+    .article-content {
+        line-height: 1.6;
+    }
+</style>
+<div class="container">
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            </div>
+        </div>
+    </section>
+    <section class="breadcrumb-ctn mt-3">
+        <div class="container">
+            <nav aria-label="breadcrumb ">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bài Đăng</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <div class="article">
+        <h1 class="article-title">@Model.Tittle</h1>
+        <div class="article-meta">
+            <span class="article-date">@Model.CreateAt</span>
+            <span class="article-author">Người đăng: @lstUser.FirstOrDefault(c=>c.Id==Model.UserId).UserName</span>
+        </div>
+        <div class="article-content">
+            @Html.Raw(@Model.Contents)
+        </div>
+    </div>
+</div>

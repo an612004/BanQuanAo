@@ -1,0 +1,43 @@
+﻿@model BanQuanAo.Share.Models.Colors
+
+@{
+    ViewData["Title"] = "Cập nhật thông tin";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách màu</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Update">Cập nhật</a></li>
+        </ul>    
+</div>
+<div class="row">
+    <div class="container">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label class="control-label">Tên màu</label>
+                <input asp-for="ColorName" class="form-control" />
+                <span asp-validation-for="ColorName" class="text-danger"></span>
+            </div>
+            <p> <b>Mã màu :</b> <span id="value"></span></p>
+            <div class="form-group">
+                <input asp-for="ColorCode" type="color" id="colorPicker"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success m-1" type="submit" >Sửa</button>
+                <a class="btn btn-secondary" asp-action="Show" >Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var colorPicker = document.getElementById("colorPicker");
+    var value = document.getElementById("value");
+    value.innerHTML = colorPicker.value;
+    colorPicker.oninput = function() {
+        value.innerHTML = this.value.toString();
+    }
+</script>

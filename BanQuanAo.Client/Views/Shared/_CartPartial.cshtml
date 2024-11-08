@@ -1,0 +1,29 @@
+﻿@using BanQuanAo.Share.ViewModels
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var httpContext = HttpContextAccessor.HttpContext;
+
+    // Thay đổi: Sử dụng Cookie thay vì Session
+    string jsoncart = httpContext.Request.Cookies["CartData"];
+
+    List<ViewCartDetails> cart = new List<ViewCartDetails>();
+    if (jsoncart != null)
+    {
+        cart = JsonConvert.DeserializeObject<List<ViewCartDetails>>(jsoncart);
+    }
+
+    <a class="minicart-btn cart cart-deskop" id="cart" href='@Url.Action("ShowCart", "Cart")'>
+        <span class="bx bx-shopping-bag bx-sm">
+            <span class="num-cart-product">@cart.Count</span>
+        </span>
+    </a>
+
+    <a asp-controller="Home" asp-action="Cart" class="cart cart-mobile">
+        <span class="bx bx-shopping-bag bx-sm">
+            <span class="num-cart-product">@cart.Count</span>
+        </span>
+    </a>
+}

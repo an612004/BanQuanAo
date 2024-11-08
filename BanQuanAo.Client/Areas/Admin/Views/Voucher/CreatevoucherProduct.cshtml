@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Product>
+
+@{
+    ViewData["Title"] = "CreateVoucherProduct";
+}
+
+<div class="search-bg">
+    <form asp-controller="Product" asp-action="ListProduct" method="get">
+        <div class="form-group">
+            <input type="text" id="name" name="name" class="form-control" placeholder="Tìm kiếm">
+        </div>
+        <button type="Submit"><i class="fa fa-search"></i></button>
+    </form>
+</div>
+<table class="table">
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BrandId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Create_At)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Update_At)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Long_Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

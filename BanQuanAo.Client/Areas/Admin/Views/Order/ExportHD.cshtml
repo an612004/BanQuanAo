@@ -1,0 +1,272 @@
+﻿@model BanQuanAo.Share.ViewModels.QLHDViewModel
+@{
+    ViewData["Title"] = "View";
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    Layout = null;
+    <style>
+        body {
+            font-size: 16px;
+            letter-spacing: 0.7px;
+            font-family: "Nunito", sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            table tr td {
+                padding: 0;
+            }
+
+                table tr td:last-child {
+                    text-align: right;
+                }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .large {
+            font-size: 1.2em;
+        }
+
+        .total {
+            font-weight: bold;
+        }
+
+        .invoice-info-container {
+            font-size: 0.875em;
+        }
+
+            .invoice-info-container td {
+                padding: 4px 0;
+            }
+
+        .client-name {
+            font-size: 1.5em;
+            vertical-align: top;
+        }
+
+        .line-items-container {
+            margin: 30px 0;
+            font-size: 0.875em;
+        }
+
+            .line-items-container th {
+                text-align: left;
+                color: black;
+                border-bottom: 2px solid #ddd;
+                padding: 10px 0 15px 0;
+                font-size: 0.75em;
+                text-transform: uppercase;
+            }
+
+                .line-items-container th:last-child {
+                    text-align: right;
+                }
+
+            .line-items-container td {
+                padding: 15px 0;
+            }
+
+            .line-items-container tbody tr:first-child td {
+                padding-top: 25px;
+            }
+
+            .line-items-container.has-bottom-border tbody tr:last-child td {
+                padding-bottom: 25px;
+                border-bottom: 2px solid #ddd;
+            }
+
+            .line-items-container.has-bottom-border {
+                margin-bottom: 0;
+            }
+
+            .line-items-container th.heading-quantity {
+                width: 50px;
+            }
+
+            .line-items-container th.heading-price {
+                text-align: right;
+                width: 100px;
+            }
+
+            .line-items-container th.heading-subtotal {
+                width: 100px;
+            }
+
+        .payment-info {
+            width: 38%;
+            line-height: 1.5;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .page-container {
+            display: none;
+        }
+    </style>
+}
+<table class="invoice-info-container">
+    <tr>
+        <td rowspan="3" class="client-name">
+            <div class="logo-container">
+                <h2>Hoá Đơn</h2>
+            </div>
+        </td>
+        <td rowspan="3" style="font-size:14px">
+            Địa chỉ: SD-78<br />
+            quận Mĩ Đình, Hà Nội <br />
+            Điện thoại: 0376810024<br />
+            Email: cskh_sd78@gmail.com
+        </td>
+    </tr>
+</table>
+
+
+<table class="invoice-info-container">
+    <tr>
+        <td rowspan="2" class="client-name">
+            @Model.RecipientName
+        </td>
+        <td>
+            <div>Mã HD - @Model.OrderCode</div>
+            @{
+                var ngayxuat = (DateTime.Now).ToString("dd/MM/yyyy HH:mm");
+                <div>Ngày xuất: @ngayxuat</div>
+            }
+        </td>
+    </tr>
+</table>
+
+
+<table class="line-items-container">
+    <thead>
+        <tr>
+            <th>Mã mặt hàng</th>
+            <th>Tên mặt hàng</th>
+            <th>Biến thể</th>
+            <th style="text-align:right">Số lượng</th>
+            <th style="text-align:right">Đơn giá*</th>
+            <th>Thành tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItem)
+        {
+            var tt = @item.PriceSale * @item.Quantity;
+            string masp = "SP" + DateTime.Now.Millisecond;
+            <tr>
+                <td>@masp</td>
+                <td>@item.ProductName</td>
+                <td style="max-width:200px">@item.ColorName/@item.SizeName</td>
+                <td style="text-align:right">@item.Quantity</td>
+                <td class="bold right">@item.PriceSale.ToString("n0")</td>
+                <td class="bold right">@tt.ToString("n0")</td>
+            </tr>
+        }
+
+        @{
+            decimal? tienhang = Model.TotalAmoutAfterApplyingVoucher - Model.VoucherValue;
+            decimal? voucher = Model.VoucherValue;
+            <tr class="p-0 m-0">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="2">
+                    Tổng tiền hàng
+                </td>
+                <td>
+                    @tienhang?.ToString("n0")
+                </td>
+            </tr>
+            @if (@Model.VoucherValue != 0)
+            {
+                <tr class="p-0 m-0">
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td colspan="2">
+                        Giảm voucher
+                    </td>
+                    <td>
+                        @voucher?.ToString("n0")
+                    </td>
+                </tr>
+            }
+            <tr class="p-0 m-0">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="2">
+                    Phí vận chuyển
+                </td>
+                <td>
+                    @Model.ShippingFee?.ToString("n0")
+                </td>
+            </tr>
+            <tr class="p-0 m-0">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="2">
+                    Tổng thanh toán
+                </td>
+                @{
+                    var tongcong = Model.TotalAmout;
+                    <td class="bold right">
+                        <b>
+                            @tongcong?.ToString("n0")
+                        </b>
+                    </td>
+                }
+            </tr>
+            <tr class="p-0 m-0">
+                <td colspan="5" class="right" style="font-size:12px">
+                    *Giá sản phẩm đã bao gồm thuế
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!--Thông tin cuối -->
+<table class="line-items-container has-bottom-border">
+    <thead>
+        <tr>
+            <th>Phương thức thanh toán</th>
+            <th>Ngày thanh toán</th>
+            <th>Tổng tiền thanh toán</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div>
+                    <strong>@Model.PaymentType</strong>
+                </div>
+            </td>
+            @if (@Model.Payment_Date != null)
+            {
+                var ngaytt = @Model.Payment_Date?.ToString("dd/MM/yyyy HH:mm");
+                <td>@ngaytt</td>
+                <td>@Model.TotalAmout?.ToString("n0")</td>
+                <td class="large total">Đã thanh toán</td>
+            }
+            else
+            {
+                <td class="large"></td>
+                <td>@Model.TotalAmout?.ToString("n0")</td>
+                <td class="large total">Chưa thanh toán</td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    <span><em>Cảm ơn quý khách và hẹn gặp lại!</em></span>
+</div>

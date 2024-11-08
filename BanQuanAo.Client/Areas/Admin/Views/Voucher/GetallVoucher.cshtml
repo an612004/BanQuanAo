@@ -1,0 +1,125 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Voucher>
+
+@{
+    ViewData["Title"] = "GetallVoucher";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<h4>Danh sách voucher</h4>
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="Show">Danh sách voucher</a></li>
+    </ul>
+</div>
+<p>
+    <a asp-action="CreateVoucher" class="btn btn-success m-1">Thêm mới</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Giá trị
+            </th>
+            <th>
+                Hình thức giảm
+            </th>
+
+            <th>
+                Giảm đơn từ
+            </th>
+            <th>
+                Giảm tối đa
+            </th>
+            <th>
+                Ngày bắt đầu
+            </th>
+            <th>
+                Ngày kết thúc
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @if (item.Discount_Type == 1)
+                    {
+                        <p>@item.Value %</p>
+                    }
+                    else
+                    {
+                        <p>@item.Value VNĐ</p>
+                    }
+                </td>
+                <td>
+                    @if (item.Discount_Type == 1)
+                    {
+                        <p>Theo %</p>
+                    }
+                    else if (item.Discount_Type == 0)
+                    {
+                        <p>Theo tiền mặt</p>
+                    }
+
+                <td>
+                        @item.Minimum_order_value?.ToString("n0") VNĐ
+                </td>
+                <td>
+                        @item.MaxDiscountAmount?.ToString("n0") VNĐ
+                </td>
+
+                <td>
+                        @Html.DisplayFor(modelItem => item.Start_Date)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.End_Date)
+                </td>
+                <td>
+                        @if (item.Status == true)
+                        {
+                        <p style="color:green">Hoạt động</p>
+                        }
+                        else
+                        {
+                        <p style="color:red">Ngừng hoạt động</p>
+                        }
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" type="button" href="editVoucher/@item.Id" title="Sửa"><i class="fa fa-edit"></i></a>
+                        @if (item.Status == true)
+                        {
+                        <button class="btn btn-danger">
+                                @Html.ActionLink("Tắt hoạt động", "KoSuDung", new { id = item.Id }, new { @style = "color:white;" })
+                        </button>
+                        }
+                        else
+                        {
+                        <button class="btn btn-success">
+                                @Html.ActionLink("Kích hoạt", "SuDung", new { id = item.Id }, new { @style = "color:white;" })
+                        </button>
+                        }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

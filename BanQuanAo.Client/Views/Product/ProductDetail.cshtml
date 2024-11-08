@@ -1,0 +1,437 @@
+﻿@model BanQuanAo.Share.ViewModels.ProductVM
+@using BanQuanAo.Share.Models;
+@using System.Linq;
+@using System.Globalization;
+@using BanQuanAo.Share.ViewModels;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+	ViewData["Title"] = "ProductDetail";
+	Layout = "~/Views/Shared/_LayoutUser.cshtml";
+	List<ProductDetailVM> lstproductDetail = ViewData["productDetail"] as List<ProductDetailVM>;
+	List<ProductImage> lstProductImage = ViewData["lstProductImage"] as List<ProductImage>;
+	List<ProductImage> lstProductImage1 = ViewData["lstProductImage1"] as List<ProductImage>;
+	List<ProductVM> lstRelatedProducts = ViewData["lstCate"] as List<ProductVM>;
+}
+<style>
+	.box-size {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+		.box-size input[type="radio"] {
+			display: none;
+		}
+
+		.box-size label {
+			display: inline-block;
+			padding: 12px 24px;
+			margin: 8px 8px;
+			cursor: pointer;
+			background-color: #f0f0f0;
+			border: 1px solid #ddd;
+			border-radius: 20px; /* Bo tròn góc */
+			transition: background-color 0.3s ease;
+			font-size: 14px;
+			color: #333; /* Màu văn bản mặc định */
+		}
+
+			.box-size label:hover {
+				background-color: #ddd;
+			}
+
+		.box-size input[type="radio"]:checked + label {
+			background-color: #2f4de0 !important; /* Màu xanh đậm */
+			color: #fff !important;
+			border-color: #2f4de0 !important;
+		}
+</style>
+
+
+<!-- slide -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+	<div class="container">
+		<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+		</div>
+	</div>
+</section>
+<!-- End Banner Area -->
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-login breadcrumb-details">
+	<div class="container">
+		<nav aria-label="breadcrumb ">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+				<li class="breadcrumb-item"><a asp-controller="Product" asp-action="ListProduct">Sản phẩm</a></li>
+				<li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.ProductName)</li>
+			</ol>
+		</nav>
+	</div>
+</section>
+<!-- End breadcumb Area -->
+<!--================Single Product Area =================-->
+<div class="product_image_area">
+	<div class="container">
+		<div class="row s_product_inner">			
+			<div class="col-lg-6">
+				<div class="swiper mySwiper2 shadow-lg">
+					<div class="swiper-wrapper">
+						@foreach (var item in lstProductImage)
+						{
+							<div class="swiper-slide p-5">
+								<img src="@(Configuration["BaseAddress"]+item.ImageUrl)" alt="img-right">
+							</div>
+						}
+					</div>
+					<div class="swiper-button-next swiper-button"></div>
+					<div class="swiper-button-prev swiper-button"></div>
+				</div>
+				<div thumbsSlider="" class="swiper mySwiper">
+					<div class="swiper-wrapper2 swiper-wrapper">
+						@foreach (var item in lstProductImage)
+							{							
+								<div class="swiper-slide">
+										<img src="@(Configuration["BaseAddress"]+item.ImageUrl)" alt="img-right">
+								</div>
+							}
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-lg-5 offset-lg-1 details-prd">
+				<div class="s_product_text">	
+					<div>
+						<h3>@Html.DisplayFor(model => model.ProductName)</h3>
+						<input name="ProductName" value="@Model.ProductName" hidden />
+					</div>
+					<div class="col-md-6">
+						<div class="product-details">
+							<div class="product-custom-brand">
+								<h4>Thương hiệu: <span>@Model.BrandName</span></h4>
+							</div>
+							<div class="product-custom-brand">
+								<h4>Thể loại: <span>@Model.CategoryName</span></h4>
+							</div>
+							<div class="product-custom-brand">
+								<h4>Chất liệu: <span>@Model.MaterialName</span></h4>
+							</div>
+							<div class="product-custom-brand">
+								<h4>Còn lại: <span id="Availiblequantity">@Model.AvailableQuantity</span></h4>
+							</div>
+						</div>
+					</div>
+					<br />
+					<p style="margin-top:5px">
+					@{
+						if (Model.MinPrice < Model.MaxPrice)
+						{
+
+							<h2 id="old-price">@Model.MinPrice?.ToString("N0") VND - @Model.MaxPrice?.ToString("N0") VND</h2>
+						}
+						else
+						{
+							<h2 id="old-price">@Model.MinPrice?.ToString("N0") VND</h2>
+						}
+					}
+						<h2 id="selected-price">
+						</h2>
+					</p>
+					<div class="size-wrap" >		
+						<div class="box-size">
+									@{
+										var lst = lstproductDetail.Where(c => c.ProductId == Model.Id).OrderBy(c => c.SizeName);
+										var uniquewh = lst.Select(item => new { Id = item.SizeId, SizeName = item.SizeName }).Distinct().ToList();
+
+										foreach (var uniqueSize in uniquewh)
+										{
+											var sizeId = uniqueSize.Id;
+											<input type="radio" name="sizeId"  value="@sizeId" data-size-id="@sizeId" id="sizeId-@sizeId" />
+											<label class="capacity" for="sizeId-@sizeId">@uniqueSize.SizeName</label>
+										}
+									}
+							</div>				
+						<div class="block-26-color mb-4">
+							<div class="color-mohinh">
+								<ul class="d-flex product-details-color" id="chooseCL" style="margin-top:10px">
+									@{
+										var lstc = lstproductDetail.Where(c => c.ProductId == Model.Id).OrderBy(c => c.ColorName);
+										var uniqueColors = lstc.Select(item => new { Id = item.ColorId, ColorName = item.ColorName, ColorCode = item.ColorCode }).Distinct().ToList();
+										foreach (var uniqueColor in uniqueColors)
+										{
+											var colorId = uniqueColor.Id;
+											<input class="color-checkbox" style="background-color: @uniqueColor.ColorCode;"
+												   type="radio" name="colorId" value="@colorId" data-color-id="@colorId" id="colorId-@colorId" />
+											<label class="capacity" for="colorId-@colorId"></label>
+										}
+									}
+								
+								</ul>
+							</div>
+						</div>
+						<div class="block-26-color product_count">
+							<h4>Số lượng:</h4>
+
+								<div class="form-group col-md-4 flex-grow-0">
+									<div class="input-group mb-3 input-spinner">
+										<div class="input-group-prepend">
+											<button class="btn btn-light"type="button" id="button-minus">-</button>
+										</div>
+										<input name="quantity" type="number" class="form-control" min="1" value="1" id="quantity-input">
+										<div class="input-group-append">
+											<button class="btn btn-light" type="button" id="button-plus">+</button>
+										</div>
+									</div>
+								</div>
+						</div>
+						<div class="card_area d-flex align-items-center">
+							@if (Model.Status == true)
+							{
+								<button type="button" onclick="addToCart()" style="color:white" class="primary-btn d-flex align-items-center justify-content-center">
+									<i class='bx bx-shopping-bag bx-sm'></i>&nbsp;&nbsp;
+									Thêm vào giỏ hàng
+								</button>
+
+							}
+							else
+							{
+								<button onclick="addToCart()" class="primary-btn custom-history-trash-disable"  disabled="disabled">Thêm vào giỏ hàng</button>
+							}
+							<input type="text" class="d-none" id="myInput">
+							<button onclick="Share()" title="Copy link" onmouseout="outFunc()" class="btn-share  d-flex align-items-center justify-content-center">
+								<i class='bx bx-purchase-tag-alt bx-rotate-180'></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!--================End Single Product Area =================-->
+<!--================Product Description Area =================-->
+<section class="product_description_area" data-aos="fade-up">
+	<div class="container">
+		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Mô tả</a>
+			</li>
+		</ul>
+		<div class="tab-content" id="myTabContent">
+			<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<p>
+					@Html.Raw(Model.Long_Description)
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================End Product Description Area =================-->
+<!-- Start related-product Area -->
+<!-- End related-product Area -->
+<!-- slide -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="~/file/user/js/jquery.min.js" type="text/javascript"></script>
+@* <!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="~/file/user/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/file/user/js/menumaker.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/file/user/js/jquery.sticky.js"></script>
+<script type="text/javascript" src="~/file/user/js/sticky-header.js"></script>
+<script type="text/javascript" src="~/file/user/js/scrolling-nav.js"></script>
+<script type="text/javascript" src="~/file/user/js/jquery.easing.min.js"></script>
+<script type="text/javascript" src="~/file/user/js/jquery.rateyo.min.js"></script>
+<script src="~/file/user/js/jquery.desoslide.js"></script> *@
+<script>
+
+
+	///////////////////
+	// Lấy phần tử input số lượng và ô có id Availiblequantity
+	var quantityInput = document.getElementById('quantity-input');
+	var availableQuantity = document.getElementById('Availiblequantity');
+
+	// Thiết lập giá trị max cho input số lượng bằng giá trị của ô Availiblequantity
+	quantityInput.max = parseInt(availableQuantity.textContent);
+
+	// Lấy phần tử nút + và - bằng id
+	var buttonPlus = document.getElementById('button-plus');
+	var buttonMinus = document.getElementById('button-minus');
+
+	// Thiết lập sự kiện click cho nút +
+	buttonPlus.addEventListener('click', function () {
+		// Tăng giá trị của input số lượng khi nút + được click
+		if (parseInt(quantityInput.value) < parseInt(availableQuantity.textContent)) {
+			quantityInput.value = parseInt(quantityInput.value) + 1;
+		}
+	});
+
+	// Thiết lập sự kiện click cho nút -
+	buttonMinus.addEventListener('click', function () {
+		// Giảm giá trị của input số lượng khi nút - được click, nhưng không được nhỏ hơn 1
+		if (parseInt(quantityInput.value) > 1) {
+			quantityInput.value = parseInt(quantityInput.value) - 1;
+		}
+	});
+
+	// Thiết lập sự kiện input cho input số lượng để kiểm tra giá trị nhập vào
+	quantityInput.addEventListener('input', function () {
+		// Nếu giá trị nhập vào lớn hơn giá trị max, cập nhật lại giá trị của input
+		if (parseInt(quantityInput.value) > parseInt(availableQuantity.textContent)) {
+			quantityInput.value = parseInt(availableQuantity.textContent);
+		}
+	});
+	var swiper = new Swiper(".mySwiper", {
+		spaceBetween: 10,
+		slidesPerView: 4,
+		freeMode: true,
+		watchSlidesProgress: true,
+	});
+	var swiper2 = new Swiper(".mySwiper2", {
+		spaceBetween: 10,
+		navigation: {
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev",
+		},
+		thumbs: {
+			swiper: swiper,
+		},
+	});
+
+	var x = location.href;
+	document.getElementById("myInput").value = x;
+
+
+	function Share() {
+		var copyText = document.getElementById("myInput");
+		copyText.select();
+		copyText.setSelectionRange(0, 99999);
+		navigator.clipboard.writeText(copyText.value);
+	}
+</script>
+<script>
+	$(document).ready(function () {
+		var selectedSizeId = null;
+		var selectedColorId = null;
+
+		$(".box-size input[type='radio']").on("change", function () {
+			var sizeId = $(this).data("size-id");
+
+			// Xoá lớp "selected" của tất cả các label trong ".color-mohinh"
+			$(".color-mohinh label.capacity").removeClass("selected");
+			// Thêm lớp "selected" cho label tương ứng
+			$(this).next("label.capacity").addClass("selected");
+
+			selectedSizeId = sizeId;
+
+			updatePrice(selectedSizeId, selectedColorId);
+		});
+
+		$(".color-mohinh input[type='radio']").on("change", function () {
+			var colorId = $(this).data("color-id");
+
+			// Xoá lớp "selected" của tất cả các label trong ".box-size"
+			$(".box-size label.capacity").removeClass("selected");
+			// Thêm lớp "selected" cho label tương ứng
+			$(this).next("label.capacity").addClass("selected");
+
+			selectedColorId = colorId;
+
+			updatePrice(selectedSizeId, selectedColorId);
+		});
+	});
+
+	function updatePrice(sizeId, colorId) {
+		if (sizeId !== null && colorId !== null) {
+			// Gọi AJAX để lấy giá trị giá sản phẩm
+			$.ajax({
+				type: "GET",
+				url: "/Product/GetProductDetail",
+				data: { productId: "@Model.Id", sizeId: sizeId, colorId: colorId },
+				success: function (response) {
+					if (response.status) {
+						// Cập nhật giá và số lượng sản phẩm
+						$("#old-price").hide();
+						$("#selected-price").text(response.price.toLocaleString("en-US") + " VND");
+						$("#Availiblequantity").text(response.quantity + " sản phẩm");
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Oops...',
+							text: response.message
+						});
+					}
+				},
+				error: function () {
+					console.error("Error updating price");
+				}
+			});
+		} else {
+			// Nếu không có size hoặc color được chọn, hiển thị giá cũ
+			$("#old-price").show();
+			$("#selected-price").empty();
+		}
+	}
+
+
+	function addToCart() {
+		// Lấy giá trị của các trường input
+		var productName = $("input[name='ProductName']").val();
+		var sizeId = $("input[name='sizeId']:checked").val();
+		var colorId = $("input[name='colorId']:checked").val();
+		var quantity = $("input[name='quantity']").val();
+
+		// Gửi yêu cầu AJAX để thêm sản phẩm vào giỏ hàng
+		$.ajax({
+			url: "/Cart/AddToCart",
+			type: "POST",
+			data: {
+				productName: productName,
+				sizeId: sizeId,
+				colorId: colorId,
+				quantity: quantity
+			},
+			success: function (response) {
+				// Xử lý kết quả trả về sau khi thêm vào giỏ hàng thành công
+				if (response.status) {
+					Swal.fire({
+						title: 'Thành công!',
+						text: response.message,
+						icon: 'success',
+						confirmButtonText: 'Đóng'
+					}).then(function () {
+						location.reload();
+					});
+				} else {
+					Swal.fire({
+						title: 'Lỗi!',
+						text: response.message,
+						icon: 'error',
+						confirmButtonText: 'Đóng'
+					}).then(function () {
+						location.reload();
+					});
+				}
+			},
+			error: function () {
+				// Xử lý khi có lỗi xảy ra trong quá trình gửi yêu cầu AJAX
+				Swal.fire({
+					title: 'Lỗi!',
+					text: 'Đã xảy ra lỗi khi thực hiện thao tác. Vui lòng thử lại sau.',
+					icon: 'error',
+					confirmButtonText: 'Đóng'
+				});
+			}
+		});
+	}
+
+	
+</script>
+
+
+
+
+

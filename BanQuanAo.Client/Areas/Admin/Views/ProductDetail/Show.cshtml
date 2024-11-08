@@ -1,0 +1,112 @@
+﻿@model IEnumerable<BanQuanAo.Share.ViewModels.ProductDetailVM>
+
+@{
+    ViewData["Title"] = "Show";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Danh sách chi tiết sản phẩm</h4>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách chi tiết sản phẩm</a></li>
+        </ul>    
+</div>
+<p>
+    <a asp-action="Create" class="btn btn-success m-1">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Sản phẩm
+            </th>
+            <th>
+               Size
+            </th>
+            <th>
+                Màu
+            </th>
+            <th>
+                Số lượng tồn
+            </th>
+            <th>
+                Giá nhập
+            </th>
+            <th>
+                Giá bán
+            </th>
+            <th>
+                Ngày cập nhật
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td >
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.SizeName)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.ColorName)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td >
+                    @item.Price?.ToString("n0") VNĐ
+            </td>
+            <td >
+                    @item.PriceSale?.ToString("n0") VNĐ
+            </td>
+            <td >
+                @{
+                        var result = item.Update_At != null ? item.Update_At.ToString() : "Chưa cập nhật";
+
+                }
+                <span>@result</span>
+                   
+
+            </td>
+            <td >
+                    @if (item.Status == true)
+                    {
+                        <p style="color:green">Đang bán</p>
+                    }
+                    else
+                    {
+                        <p style="color:red">Ngừng bán</p>
+                    }
+                
+
+            </td>
+            <td >
+                <a class="btn btn-primary btn-sm" type="button" href="Update/@item.Id" title="Sửa"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-warning btn-sm"  type="button" href="Details/@item.Id" title="Chi tiết"><i class="fas fa-info-circle"></i></a>
+                    @*<a class="btn btn-danger btn-sm " type="button" href="ChangeStatus/@item.Id" title="Xóa"><i class="fas fa-trash"></i></a>*@
+                    @*@Html.ActionLink("Xoá", "ChangeStatus", new { idspct =item.Id,status=false }, new {@class="btn btn-danger btn-sm"})*@
+                    @if (item.Status == true)
+                    {
+                        <button class="btn btn-danger">
+                            @Html.ActionLink("Ngừng bán", "ChangeStatus",new { idspct =item.Id,status=false }, new { @style = "color:white;" })
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-success">
+                            @Html.ActionLink("Mở bán", "ChangeStatus", new { idspct =item.Id,status=true }, new { @style = "color:white;" })
+                        </button>
+                    }
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

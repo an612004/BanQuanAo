@@ -1,0 +1,91 @@
+﻿@model IEnumerable<BanQuanAo.Share.ViewModels.PostVM>
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Danh sách bài viết</h4>
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="Index">Danh sách bài viết</a></li>
+    </ul>
+</div>
+<p>
+    <a asp-action="CreatePost" class="btn btn-success m-1">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                Ảnh bìa
+            </th>
+            <th>
+                Tiêu đề
+            </th>
+            <th>
+                Ngày đăng
+            </th>
+            <th>
+                Ngày cập nhật
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    <img height="150" width="170" class="d-block " src="@(Configuration["BaseAddress"]+ item.TittleImage)">
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tittle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UpdateAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @if (item.Status == 1)
+                    {
+                        <p style="color:green">Xuất bản</p>
+                    }
+                    else
+                    {
+                        <p style="color:red">Ngừng xuất bản</p>
+                    }
+                </td>
+                <td colspan="2">
+
+                    @Html.ActionLink("Sửa", "EditPost", new {  id=item.Id  }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Chi tiết", "DetailPost", new {  id=item.Id  }, new { @class = "btn btn-warning btn-sm" })
+                    @if (item.Status !=1)
+                    {
+                            @Html.ActionLink("Xuất bản", "ChangeStatus", new { id = item.Id,status=1 }, new { @style = "color:white;",@class="btn btn-success" })
+                    }
+                    else
+                    {
+                            @Html.ActionLink("Ngừng xuất bản", "ChangeStatus", new { id = item.Id ,status = 0}, new { @style = "color:white;" ,@class="btn btn-danger"})
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

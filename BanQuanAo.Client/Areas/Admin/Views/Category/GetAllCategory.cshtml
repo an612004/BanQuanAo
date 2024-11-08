@@ -1,0 +1,40 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Category>
+@{
+    ViewData["Title"] = "GetAllCategory";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<h4>Danh sách Kiểu Dáng</h4>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="GetAllCategory">Danh sách Kiểu Dáng</a></li>
+        </ul>    
+</div>
+<p>
+    <a asp-action="Create"  class="btn btn-success m-1">Thêm mới Kiểu dáng mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên Kiểu dáng
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm " type="button" href="Edit/@item.Id" title="Sửa"><i class="fa fa-edit"></i></a>
+              
+                <a class="btn btn-danger btn-sm " type="button" href="Delete/@item.Id" title="Xóa"><i class="fas fa-trash"></i></a>
+               
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

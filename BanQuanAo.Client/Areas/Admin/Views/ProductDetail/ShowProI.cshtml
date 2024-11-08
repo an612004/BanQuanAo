@@ -1,0 +1,60 @@
+﻿
+@model IEnumerable<BanQuanAo.Share.ViewModels.ProductImageVM>
+@{
+    ViewData["Title"] = "ShowProI";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+    string? id = ViewData["IDSanPham"] as string;
+}
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+
+<h3>Danh sách ảnh sản phẩm</h3>
+<script>
+    function AddImage(event, id) {
+        var value = event.target.files[0];
+        var formData = new FormData();
+        formData.append("file", value);
+        formData.append("idSanPham", '@id');
+        fetch("/Admin/ProductDetail/CreateImg", {
+            method: 'POST',
+            body: formData
+        });
+        setTimeout("location.reload(true);", 600);
+    };
+
+</script>
+<div style="margin-bottom:10px">
+    <label for="image" class="btn btn-primary">Thêm ảnh</label>
+    <input id="image" style="visibility:hidden;" type="file" onchange="AddImage(event)">
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên sản phẩm
+            </th>
+            
+            <th>
+                Ảnh
+            </th>
+            
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.ProductName
+                </td>
+                <td>
+                    <img style="width:200px;height:100px" src="@(Configuration["BaseAddress"]+ item.ImageUrl)">
+                </td>
+                <td>
+                    @Html.ActionLink("Xoá", "RemoveProI", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

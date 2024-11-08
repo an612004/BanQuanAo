@@ -1,0 +1,130 @@
+﻿@using BanQuanAo.Share.Models;
+@using BanQuanAo.Share.ViewModels;
+@model IEnumerable<BanQuanAo.Share.ViewModels.ProductVM>;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+
+    List<WishListVM> wl = ViewData["wishList"] as List<WishListVM>;
+    List<ProductDetailVM> productDetail = ViewData["productDetail"] as List<ProductDetailVM>;
+    List<ProductImage> ProductImage = ViewData["productImage"] as List<ProductImage>;
+    List<ProductVM> Product = ViewData["Product"] as List<ProductVM>;
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        </div>
+    </div>
+</section>
+
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-ctn mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sản phẩm đã thích</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<section class="order_details pt-5">
+<div class="container">
+        <div class="order_details_table">
+            <h2>Sản phẩm đã thích</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr class="order_details-info">
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Số lượng tồn</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            IEnumerable<ProductDetailVM> LstProductDetail = productDetail.Where(c => c.ProductId == item.Id);
+                            var productDetailID = LstProductDetail.First().Id; // lấy id productdetail đầu tiên
+                            var lstProductImage = ProductImage.Where(c => c.ProductDetailId == productDetailID); // lấy list img
+                            var imgFirst = lstProductImage.First().ImageUrl; // lấy img đầu tiên
+                            <tr class="orderdetails-custom">
+
+                                <td class="orderdetails-img">
+
+                                    <img src="@(Configuration["BaseAddress"]+imgFirst)" style="width:100px; height:100px;" />
+
+                                </td>
+                                <td>
+                                    <a href="/Product/ProductDetail/@item.Id" class="name">@item.ProductName</a>
+                                </td>
+                                <td>
+                                    @item.AvailableQuantity
+                                </td>
+                                <td>
+                                    @if (item.MinPrice < item.MaxPrice)
+                                    {
+                                        <span>
+                                            @item.MinPrice?.ToString("N0") VND  - @item.MaxPrice?.ToString("N0") VND
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @item.MinPrice?.ToString("N0") VND
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    @{
+                                        var wishListId = wl.FirstOrDefault(c => c.ProductId == item.Id)?.Id;
+                                        <button class="btn btn-danger" onclick="deleteFromWishList('@wishListId')">X</button>
+                                    }
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+</section>
+
+
+    
+<script>
+    function deleteFromWishList(idwistlist) {
+        $.ajax({
+            url: '/Product/DeleteFromWishList',
+            type: 'POST',
+            data: { idwistlist: idwistlist },
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Xoá thành công khỏi mục đã thích',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                //sau bao lâu thì reload
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
+                console.log(response.message);
+            },
+            error: function() {
+                // Xử lý khi có lỗi xảy ra
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Có lỗi xảy ra',
+                    text: 'Vui lòng thử lại sau.'
+                });
+                console.log("Có lỗi xảy ra khi gọi hàm DeleteFromWishList");
+            }
+        });
+    }
+    </script>

@@ -1,0 +1,126 @@
+﻿@model BanQuanAo.Share.ViewModels.ProductDetailVM
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+    List<string> imageExtensions = new List<string>()
+    {
+        ".png", ".jpg", ".jpeg", ".gif", ".tiff", ".pdf",".webp"
+    };
+
+}
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách chi tiết sản phẩm</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Detail">Chi tiết sản phẩm</a></li>
+        </ul>    
+</div>
+<div style="display:flex; align-items: center;">
+    <div style="width:60%">
+        <dl class="row">
+        <dt  class = "col-sm-2">
+            Tên sản phẩm:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        <dt class = "col-sm-2" >
+            Size:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SizeName)
+        </dd>
+        <dt  class = "col-sm-2">
+            Màu:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ColorName)
+        </dd>
+        <dt  class = "col-sm-2">
+            Số lượng tồn:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class = "col-sm-2" >
+            Giá nhập:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class = "col-sm-2" >
+            Giá bán:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PriceSale)
+        </dd>
+        <dt class = "col-sm-2" >
+            Ngày nhập:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Create_At)
+        </dd>
+        <dt class = "col-sm-2" >
+            Ngày cập nhật:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Update_At)
+        </dd>
+        <dt  class = "col-sm-2">
+            Mô tả:
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.Raw(Model.Description)
+        </dd>
+        <dt  class = "col-sm-2">
+            Trạng thái:
+        </dt>
+        <dd class = "col-sm-10">
+            @if (Model.Status == true)
+                    {
+                        <p>Còn hàng</p>
+                    }
+                    else
+                    {
+                        <p>Hết hàng</p>
+                    }
+        </dd>
+
+    </dl>
+    </div>
+    <div style="width:40%">
+        <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
+            <div class="carousel-inner">              
+                @for (int i = 0; i < Model.Images.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                       <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                                <img class="d-block w-100" src="@(Configuration["BaseAddress"]+ Model.Images[i])">
+                       </div>
+                    }
+                    else
+                    {
+                        <div class="@(i==0 ? "carousel-item active" : "carousel-item") ">
+                                <img class="d-block w-100" src="@(Configuration["BaseAddress"]+ Model.Images[i])">
+                       </div>
+                    }
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Trước</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Sau</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="btn btn-info" href="@Url.Action("ShowProI", "ProductDetail", new { IdPr = Model.Id })">Chỉnh ảnh</a>
+     <a class="btn btn-secondary" asp-action="Show" >Quay lại</a>
+         
+</div>

@@ -1,0 +1,215 @@
+﻿@model X.PagedList.IPagedList<BanQuanAo.Share.Models.Order>
+@using X.PagedList.Mvc.Core;
+
+@using BanQuanAo.Share.Models;
+@using BanQuanAo.Share.ViewModels;
+
+@{
+    ViewData["Title"] = "ShowList";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<body>
+    <form asp-action="ShowList" method="get">
+        <div class="container mt-5">
+            <h2 class="mb-4">Lọc Theo Ngày</h2>
+
+            <div class="row">
+                <div class="col-md-5 mb-2">
+                    <label for="searchText">Tìm kiếm theo mã hoá đơn:</label>
+                    <input type="text" id="searchText" name="searchText" class="form-control">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <label for="startDate">Ngày Bắt Đầu:</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control">
+                </div>
+
+                <div class="col-md-2 mb-2">
+                    <label for="endDate">Ngày Kết Thúc:</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="searchButton" class="invisible">Tìm</label>
+                    <button type="submit" class="btn btn-primary btn-block">Tìm</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        <!--DANH SÁCH HÓA ĐƠN-->
+        <div class="d-flex flex-column p-12 bg-white flex-grow-1 col-md-9">
+            <div class="d-flex flex-row p-1 bg-white align-items-center">
+            </div>
+            <table class="table table-hover table-bordered tbbills" align="center" cellpadding="10">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Mã hóa đơn</th>
+                        <th scope="col">Thời gian tạo</th>
+                        <th scope="col">Khách hàng</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col" class="text-end">Tổng tiền hàng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="billDetail('@item.Id');">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Create_Date)
+                            </td>
+                            @{
+                                var user = ViewData["User"] as List<UserViewModel>;
+                                @if (user != null)
+                                {
+
+                                    @foreach (var item1 in user)
+                                    {
+                                        if (item.UserId == item1.Id)
+                                        {
+                                            <td>@item1.UserName</td>
+                                        }
+                                    }
+                                }
+                            }
+                            <td>
+
+                                @if (item.OrderStatusId == Guid.Parse("1C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-warning text-dark">Đang được xử lý</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("2C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-primary">Chờ lấy hàng</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("3C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-primary">Đang giao hàng</span>
+                                }
+
+                                else if (item.OrderStatusId == Guid.Parse("4C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-success">Giao hàng thành công</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("5C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-danger text-dark">Giao hàng không thành công</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("6C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-danger text-dark">Hủy đơn</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("7C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-primary">Yêu cầu trả hàng</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("8C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-success">Chấp nhận trả hàng</span>
+                                }
+                                else if (item.OrderStatusId == Guid.Parse("9C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                {
+                                    <span class="badge bg-primary">Chờ Thanh toán</span>
+                                }
+
+                            </td>
+
+                            <td class="text-end">
+                                @item.TotalAmout?.ToString("n0")
+                            </td>
+
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-lg-12 mt-3 p-3 pagin-history">
+                <div class="shadow-sm">
+                    <div class="pagin-left float-left font-weight-lighter mt-1">
+                        Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                    </div>
+                    <div class="pagin-right float-right">
+                        @Html.PagedListPager(Model, page => Url.Action("ShowList", new { page,status = ViewBag.status,searchText = ViewBag.searchText,startDate = ViewBag.startDate,endDate = ViewBag.endDate}))
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3" style="float:left">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Lọc theo trạng thái</h5>
+                </div>
+                <div class="card-header">
+                    <a href="/admin/order/showlist">Reset</a>
+                </div>
+
+
+                <div class="card-body">
+                    <div class="btn-group-vertical" id="select-trangThai">
+                        <a href="#" onclick="updateUrlAndReload('status', '0'); return false;" class="btn btn-outline-primary btn-text">Tất cả</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '1'); return false;" class="btn btn-outline-primary btn-text">Đang được xử lý</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '2'); return false;" class="btn btn-outline-primary btn-text">Chờ lấy hàng</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '3'); return false;" class="btn btn-outline-primary btn-text">Đang giao hàng</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '4'); return false;" class="btn btn-outline-primary btn-text">Giao hàng thành công</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '5'); return false;" class="btn btn-outline-primary btn-text">Giao hàng không thành công</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '6'); return false;" class="btn btn-outline-primary btn-text">Hủy đơn</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '7'); return false;" class="btn btn-outline-primary btn-text">Yêu cầu trả hàng</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '8'); return false;" class="btn btn-outline-primary btn-text">Chấp nhận trả hàng</a>
+                        <a href="#" onclick="updateUrlAndReload('status', '9'); return false;" class="btn btn-outline-primary btn-text">Chờ Thanh toán</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="modal fade" id="chitiethd" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content cthdcontent">
+                            <div class="modal-header">
+                                <h5 class="modal-title fw-bold">Chi tiết hóa đơn</h5>
+                                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body cthd-body">
+                            </div>
+                            @* <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function billDetail(idhd) {
+        $(".cthd-body").load("/Order/ViewChiTietHD/" + idhd);
+        $("#chitiethd").modal("show"); console.log(idhd);
+    }
+    function timKiemHD() {
+        var type = $("#searchtype").text();
+        var input = $("#inputhd").val();
+        var trangthai = $("#select-trangThai .btn-text").text();
+        var bdau = $("#bdau").text();
+        var ketthuc = $("#ketthuc").text();
+        var url = "/Order/ShowList?input=" + input + "&type=" + type + "&trangthai=" + trangthai + "&bdau=" + bdau + "&ketthuc=" + ketthuc;
+        window.location.href = url;
+    }
+    function updateUrlAndReload(parameterName, parameterValue) {
+        var currentUrl = window.location.href;
+        var url = new URL(currentUrl);
+        url.searchParams.set(parameterName, parameterValue);
+        // Thêm giá trị của page vào URL
+        url.searchParams.set('page', getCurrentPageNumber());
+        window.location.href = url.toString();
+    }
+
+    function getCurrentPageNumber() {
+        // Lấy giá trị của page hiện tại từ URL
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('page') || '1'; // Nếu không có page trong URL, mặc định là 1
+    }
+</script>
+
+

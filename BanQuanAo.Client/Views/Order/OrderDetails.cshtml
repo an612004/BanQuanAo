@@ -1,0 +1,472 @@
+﻿@using BanQuanAo.Share.ViewModels
+@model List<DonMuaChiTietVM>
+@{
+    ViewData["Title"] = "OrderDetails";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    int? tongtien = 0;
+    int? giaSP = 0;
+    int? tienShip = 0;
+    int? giaTri = null;
+    int? hinhThucGiamGia = null;
+    int? trangthaiDanhGia = 0;
+}
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+<body>
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+    <!-- Start breadcumb Area -->
+    <section class="breadcrumb-login">
+        <div class="container">
+            <nav aria-label="breadcrumb ">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Order" asp-action="allOrder">Lịch sử</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Chi Tiết đơn hàng</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <div class="colorlib-product colorlib-product-details ">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="process-wrap process-wrap-details ">
+                        <div class="steps-timeline">
+                            @if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("1C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                            {
+                                <div class="steps-one text-center active">
+                                    <p><span class='bx bx-cog bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang xử lý
+                                    </h3>
+                                </div>
+
+                                <div class="steps-two text-center">
+                                    <p><span class='bx bxs-package bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang đóng gói
+                                    </h3>
+                                </div>
+
+                                <div class="steps-three text-center">
+                                    <p><span class='bx bxs-truck bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang giao
+                                    </h3>
+                                </div>
+
+                                <div class="steps-four text-center">
+                                    <p><span class='bx bx-badge-check bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã nhận
+                                    </h3>
+                                </div>
+
+                                <div class="steps-five text-center">
+                                    <p><span class='bx bxs-x-circle bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã hủy
+                                    </h3>
+                                </div>
+                            }
+                            else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("2C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                            {
+                                <div class="steps-one text-center active">
+                                    <p><span class='bx bx-cog bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang xử lý
+                                    </h3>
+                                </div>
+
+                                <div class="steps-two text-center active">
+                                    <p><span class='bx bxs-package bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang đóng gói
+                                    </h3>
+                                </div>
+
+                                <div class="steps-three text-center">
+                                    <p><span class='bx bxs-truck bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang giao
+                                    </h3>
+                                </div>
+
+                                <div class="steps-four text-center">
+                                    <p><span class='bx bx-badge-check bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã nhận
+                                    </h3>
+                                </div>
+
+                                <div class="steps-five text-center">
+                                    <p><span class='bx bxs-x-circle bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã hủy
+                                    </h3>
+                                </div>
+                            }
+                            else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("3C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                            {
+                                <div class="steps-one text-center active">
+                                    <p><span class='bx bx-cog bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang xử lý
+                                    </h3>
+                                </div>
+
+                                <div class="steps-two text-center active">
+                                    <p><span class='bx bxs-package bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang đóng gói
+                                    </h3>
+                                </div>
+
+                                <div class="steps-three text-center active">
+                                    <p><span class='bx bxs-truck bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang giao
+                                    </h3>
+                                </div>
+
+                                <div class="steps-four text-center">
+                                    <p><span class='bx bx-badge-check bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã nhận
+                                    </h3>
+                                </div>
+
+                                <div class="steps-five text-center">
+                                    <p><span class='bx bxs-x-circle bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã hủy
+                                    </h3>
+                                </div>
+                            }
+                            else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("4C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                            {
+                                <div class="steps-one text-center active">
+                                    <p><span class='bx bx-cog bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang xử lý
+                                    </h3>
+                                </div>
+
+                                <div class="steps-two text-center active">
+                                    <p><span class='bx bxs-package bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang đóng gói
+                                    </h3>
+                                </div>
+
+                                <div class="steps-three text-center active">
+                                    <p><span class='bx bxs-truck bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang giao
+                                    </h3>
+                                </div>
+
+                                <div class="steps-four text-center active-success">
+                                    <p><span class='bx bx-badge-check bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã nhận
+                                    </h3>
+                                </div>
+
+                                <div class="steps-five text-center">
+                                    <p><span class='bx bxs-x-circle bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã hủy
+                                    </h3>
+                                </div>
+                            }
+                            else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("6C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                            {
+                                <div class="steps-one text-center">
+                                    <p><span class='bx bx-cog bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang xử lý
+                                    </h3>
+                                </div>
+
+                                <div class="steps-two text-center">
+                                    <p><span class='bx bxs-package bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang đóng gói
+                                    </h3>
+                                </div>
+
+                                <div class="steps-three text-center">
+                                    <p><span class='bx bxs-truck bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đang giao
+                                    </h3>
+                                </div>
+
+                                <div class="steps-four text-center">
+                                    <p><span class='bx bx-badge-check bx-tada bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã nhận
+                                    </h3>
+                                </div>
+
+                                <div class="steps-five text-center active-cancel">
+                                    <p><span class='bx bxs-x-circle bx-spin bx-lg'></span></p>
+                                    <h3 class="steps-name">
+                                        Đã hủy
+                                    </h3>
+                                </div>
+                            }
+                        </div><!-- /.steps-timeline -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--================Order Details Area =================-->
+    <section class="order_details pt-5">
+        <div class="container">
+            <div class="row order_d_inner">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h4 class="mb-3">Chi tiết khách hàng</h4>
+                    <div class="details_item">
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <ul class="list">
+                                <li><a><span>Tên khách hàng :</span>@Model.FirstOrDefault().TenNguoiNhan</a></li>
+                                <li><a><span>Địa chỉ :</span>@Model.FirstOrDefault().DiaChi</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <ul class="list">
+                                <li><a><span>Số điện thoại :</span>@Model.FirstOrDefault().SDT</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <ul class="list">
+                                <li><a><span>Trạng thái :</span>
+                                        @if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("1C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <span>Đang được xử lý</span>
+                                        }
+                                        else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("2C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <span>Chờ lấy hàng</span>
+                                        }
+                                        else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("3C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <span>Đang giao hàng</span>
+                                        }
+                                        else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("4C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <span>Giao hàng thành công</span>
+                                        }
+                                        else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("5C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <span>Giao hàng không thành công</span>
+                                        }
+                                        else if (Model.FirstOrDefault().TrangThaiGiaoHang == Guid.Parse("6C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <span>Huỷ đơn</span>
+                                        }
+                                    </a></li>
+                                <li><a><span>Ngày đặt :</span>@Model.FirstOrDefault().NgayTao</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="order_details_table">
+                <h2>Chi Tiết Đơn Hàng</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="order_details-info">
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Màu</th>
+                                <th scope="col">Size</th>
+                                <th scope="col">Số lượng</th>
+                                <th scope="col">Giá</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="orderdetails-custom">
+                                    <td class="orderdetails-img">
+
+                                        <img src="@(Configuration["BaseAddress"]+item.DuongDan)" style="width:100px; height:100px;" />
+                                            
+                                    </td>
+                                    <td>
+                                        @item.TenSanPham
+                                    </td>
+                                    <td>
+                                        @item.TenMau
+                                    </td>
+                                    <td>
+                                        @item.TenKichCo
+                                    </td>
+                                    <td>
+                                        @item.SoLuong
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:0,0 VNĐ}", item.DonGia)
+                                    </td>
+                                    @{
+                                        giaSP += item.DonGia * item.SoLuong;
+                                        tienShip = Convert.ToInt32( item.TienShip);
+                                        giaTri = item.GiaTriVC;
+                                        
+                                        hinhThucGiamGia = item.HinhThucGiamGia;
+                                       
+                                        trangthaiDanhGia += item.TrangThaiDanhGia;       
+                                    }
+                                </tr>
+                               
+                            }
+                            <tr>
+                                <td>
+                                    <h4>Tổng</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <p>@string.Format("{0:0,0 VNĐ}", giaSP)</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>Tiền ship</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <p>@string.Format("{0:0,0 VNĐ}", tienShip)</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>Giảm giá</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <p>
+                                        @if (hinhThucGiamGia == 0) // theo tiền mặt
+                                        {
+                                          <p>- @Convert.ToInt32(giaTri).ToString("n0").Replace(',', '.') VNĐ</p>
+                                        }
+                                        else if (hinhThucGiamGia == 1)
+                                        {
+                                            <p>
+                                            - @giaTri%
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                        <p>0 VND</p>
+                                        }
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>Tổng tiền</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    @{
+                                        if (hinhThucGiamGia == 1)
+                                        {
+                                            tongtien = Convert.ToInt32(giaSP - giaSP * (Convert.ToDecimal(giaTri) / 100)) + tienShip;
+                                        }
+                                        else if (hinhThucGiamGia == 0)
+                                        {
+                                            tongtien = giaSP - Convert.ToInt32(giaTri) + tienShip;
+                                        }
+                                        else
+                                        {
+                                            tongtien = giaSP + tienShip;
+                                        }
+                                    }
+                                    <p>@tongtien?.ToString("N0") VND</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h4>Phương thức thanh toán</h4>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    <h5></h5>
+                                </td>
+                                <td>
+                                    
+                                    <p>@Model.FirstOrDefault().PhuongThucThanhToan</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+

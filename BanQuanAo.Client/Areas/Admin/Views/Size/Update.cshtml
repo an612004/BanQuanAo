@@ -1,0 +1,41 @@
+﻿@model BanQuanAo.Share.Models.Size
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h3>Cập nhật thông tin size</h3>
+<hr />
+<div class="row">
+    <div class="container" >
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label class="control-label">Tên size</label>
+                <input asp-for="SizeName" class="form-control" />
+                <span asp-validation-for="SizeName" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label class="control-label">Chiều rộng</label>
+                <input asp-for="Width" class="form-control" />
+                <span asp-validation-for="Width" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Chiều cao</label>
+                <input asp-for="Height" class="form-control" />
+                <span asp-validation-for="Height" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <button class="btn btn-success m-1" type="submit" >Sửa</button>
+                <a class="btn btn-secondary" asp-action="Show" >Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

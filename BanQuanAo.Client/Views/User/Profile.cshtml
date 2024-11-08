@@ -1,0 +1,93 @@
+﻿@model BanQuanAo.Share.Models.User
+@using BanQuanAo.Share.Models
+
+@{
+    
+}
+<section class="banner-area organic-breadcrumb">
+<div class="container">
+    <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+    </div>
+</div>
+</section>
+
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-ctn mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Thông tin cá nhân</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<h2 style="text-align:center">Thông tin tài khoản</h2>
+<hr/>
+<div class="row">
+    <div class="container">
+          
+
+        <form asp-controller="Authentication" asp-action="Profile" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label class="control-label">Tên Tài Khoản</label>
+                <input asp-for="UserName" class="form-control"disabled />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label">Mô tả</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Số điện thoại</label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Ngày sinh</label>
+
+                <input asp-for="DateOfBirth" class="form-control" type="datetime-local" />
+
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+               
+                <div class="form-group">
+                    <label class="control-label">Điểm Của Khách</label>
+                <input asp-for="Points" class="form-control" disabled />
+
+                    <span asp-validation-for="Points" class="text-danger"></span>
+                </div>
+            <div class="form-group">
+                @{
+                    var rank = ViewData["rank"] as List<Rank>;
+                    if (rank != null)
+                    {
+                        foreach (var item in rank)
+                        {
+                            if (item.Id == Model?.RankId)
+                            {
+                                <label class="control-label">Rank:</label>
+
+                                <h4 class="control-label"  style="color:green; background-color:de ">@item.Name</h4>
+                                <input class="control-label" asp-for="RankId" style="display:none">
+                                <span asp-validation-for="@item.Name" class="text-danger"></span>
+                            }
+                        }
+                    }
+                }
+            </div>
+
+           
+            <div class="form-group">
+                <button class="btn btn-success m-1" value="Profile" type="submit">Sửa Profile</button>
+                <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Quay lại</a>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>

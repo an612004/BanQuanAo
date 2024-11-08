@@ -1,0 +1,323 @@
+﻿@model BanQuanAo.Share.ViewModels.DonMuaChiTietVM
+@{
+}
+<!-- Hiển thị thông báo thành công -->
+@if (ViewData["ShowSuccessMessage"] != null && (bool)ViewData["ShowSuccessMessage"])
+{
+<div id="successMessage" class="alert alert-success">
+    @ViewData["SuccessMessage"]
+</div>
+}
+
+<!-- Hiển thị thông báo lỗi -->
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#thongtin" type="button" role="tab" aria-controls="home" aria-selected="true">Thông tin</button>
+    </li>
+    
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#ttgh" type="button" role="tab" aria-selected="false" tabindex="-1">Thông tin giao hàng</button>
+        </li>
+    
+    
+</ul>
+<div class="tab-content pt-2" id="myTabjustifiedContent">
+    <!--Thông tin-->
+    <div class="tab-pane fade p-3 show active" id="thongtin" role="tabpanel" aria-labelledby="home-tab">
+        <div class="row row-padding-15 row-flex">
+            <div class="col-lg-4 col-sm-12">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Mã hóa đơn:</label>
+                    <div class="col-sm-7">
+                        <label class="col-form-label"><strong>@Model.OrderCode</strong></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Ngày tạo:</label>
+                    <div class="col-sm-7">
+                        <label class="col-form-label">@Model.NgayTao?.ToString("dd/MM/yyyy HH:mm")</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Khách hàng:</label>
+                    <div class="col-sm-7">
+                        <label class="col-form-label text-primary">@Model.TenNguoiDung</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Thanh toán:</label>
+                    <div class="col-sm-7">
+                        <label class="col-form-label">@Model.PhuongThucThanhToan</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Trạng thái:</label>
+                    <div class="col-sm-7">
+                        <label class="col-form-label text-primary">
+                            @{
+                                @(Model.TrangThaiGiaoHang == Guid.Parse("1C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Đang được xử lý" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("2C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Chờ lấy hàng" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("3C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Đang giao hàng" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("4C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Giao hàng thành công" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("5C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Giao hàng không thành công" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("6C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Hủy đơn" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("7C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Yêu cầu trả hàng" :
+                                (Model.TrangThaiGiaoHang == Guid.Parse("8C54C2DD-2FA5-4041-9B94-FB613BEBDFBC") ? "Chấp nhận trả hàng" : "Chờ Thanh toán"))))))))
+                            }
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Ngày thanh toán:</label>
+                    <div class="col-sm-7">
+                        @if (@Model.NgayThanhToan == null)
+                        {
+                            <label class="col-form-label">Chưa thanh toán</label>
+                        }
+                        else
+                        {
+                            <label class="col-form-label">@Model.NgayThanhToan?.ToString("dd/MM/yyyy HH:mm")</label>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-5 col-form-label">Nhân viên:</label>
+                    <div class="col-sm-7">
+                        <label class="col-form-label">Admin</label>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="form-group">
+                    <label class="form-label control-label">Ghi chú:</label>
+                    <div class="col-sm-12">
+                        <textarea class="form-control" style="height: 130px" id="ghiChuinTTHD">@Model.Description</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Chi tiết hóa đơn-->
+        <div class="d-flex mt-2">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="background:#d9eafd">
+                        <th scope="col" class="text-end">Tên Sản Phẩm</th>
+                        <th scope="col" class="text-end">Số lượng</th>
+                        <th scope="col" class="text-end">Giá bán</th>
+                        <th scope="col" class="text-end"> Màu sắc</th>
+                        <th scope="col" class="text-end">Size</th>
+                        <th scope="col" class="text-end">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItem)
+                    {
+                        <tr>
+                            <td class="text-end">@item.ProductName  </td>
+                            <td class="text-end">@item.Quantity</td>
+                            <td class="text-end">@item.PriceSale.ToString("n0")</td>
+                            <td class="text-end">@item.ColorName</td>
+                            <td class="text-end">@item.SizeName</td>
+                            @{
+                                var tt = item.Quantity * item.PriceSale;
+                                <td class="text-end"><b>@tt.ToString("n0")</b></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!--Thanh Toán-->
+        <div class="d-flex">
+            @{
+                int tienhang = Convert.ToInt32( Model.OrderItem.Sum(c => c.Quantity * c.PriceSale));
+                var @voucher = 0;
+                
+                
+                <div class="d-flex flex-column ms-auto" style="width:35%">
+                    <div class="row  text-end">
+                        <label class="col-sm-6 col-form-label">Tổng số lượng:</label>
+                        <div class="col-sm-6">
+                            <label class="col-sm-5 col-form-label">@Model.OrderItem.Sum(c => c.Quantity)</label>
+                        </div>
+                    </div>
+                    <div class="row  text-end">
+                        <label class="col-sm-6 col-form-label">Tổng tiền hàng:</label>
+                        <div class="col-sm-6">
+                            <label class="col-sm-5 col-form-label">@tienhang.ToString("n0")</label>
+                        </div>
+                    </div>
+
+                   
+                        <div class="row  text-end">
+                            <label class="col-sm-6 col-form-label">Voucher hóa đơn:</label>
+                            <div class="col-sm-6">
+                                <label class="col-sm-5 col-form-label">
+                                    @Model.GiaTriVC 
+                                </label>
+                            </div>
+                        </div>
+                    
+                   
+                        <div class="row text-end">
+                            <label class="col-sm-6 col-form-label">Phí vận chuyển</label>
+                            <div class="col-sm-6">
+                                <label class="col-sm-5 col-form-label">@Model.TienShip?.ToString("n0")</label>
+                            </div>
+                        </div>
+                    
+                    <div class="row text-end">
+                        <label class="col-sm-6 col-form-label">Tổng cộng:</label>
+                        <div class="col-sm-6 ">
+                            @{
+                                Model.GiaTriVC = @voucher ;
+                                var tongcong = Model.OrderItem.Sum(c => c.Quantity * c.PriceSale) + Model.TienShip - @voucher;
+                                <label class="col-sm-5 col-form-label">
+                                    <b>
+                                        @tongcong?.ToString("n0")
+                                    </b>
+                                </label>
+                            }
+                        </div>
+                    </div>
+                   
+                </div>
+            }
+        </div>
+        <hr />
+        <div class="d-flex flex-row justify-content-end">
+            
+            @if (@Model.TrangThaiGiaoHang == Guid.Parse("1C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+            {
+                <div class="d-flex p-2">
+                    <a type="button"class="btn btn-primary fw-normal text-white" asp-area="Admin" asp-controller="Order" asp-action="DoiTrangThai" asp-route-idhd="@Model.ID" asp-route-trangthai="2">Xác nhận hóa đơn</a>
+                </div>
+                <div class="d-flex p-2">
+                    <a type="button" class="btn btn-danger fw-normal text-white" onclick="huyDon('@Model.ID')">Hủy bỏ</a>
+                </div>
+            }
+            @if (@Model.TrangThaiGiaoHang == Guid.Parse("2C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+            {
+                <div class="d-flex p-2">
+                    <a type="button" asp-area="Admin" asp-controller="Order" asp-action="DoiTrangThai" asp-route-idhd="@Model.ID" asp-route-trangthai="3" class="btn btn-warning fw-normal text-white"> Giao hàng</a>
+                </div>
+            }
+            @if (@Model.TrangThaiGiaoHang == Guid.Parse("3C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+            {
+                <div class="d-flex p-2">
+                    <a type="button" asp-area="Admin" asp-controller="Order" asp-action="DoiTrangThai" asp-route-idhd="@Model.ID" asp-route-trangthai="4" class="btn btn-success fw-normal text-white">Giao hàng thành công</a>
+                </div>
+                <div class="d-flex p-2">
+                    <a type="button" asp-area="Admin" asp-controller="Order" asp-action="DoiTrangThai" asp-route-idhd="@Model.ID" asp-route-trangthai="5" class="btn btn-danger fw-normal text-white">Giao không hàng thành công</a>
+                </div>
+            }
+
+          
+          
+           
+            <div class="d-flex p-2">
+                <button type="button" id="save" class="btn btn-info fw-normal text-white"> Lưu ghi chú</button>
+            </div>
+
+           
+
+           
+            <div class="d-flex p-2">
+                <button onclick="location.href='/Bill/ExportPDF/@Model.ID'" class="btn btn-secondary" style="margin-right:5px">Xuất PDF</button>
+
+            </div>
+            <div class="d-flex p-2">
+                <button type="button" class="btn btn-danger fw-normal text-white" data-bs-dismiss="modal"> Đóng</button>
+            </div>
+
+        </div>
+    </div>
+    
+        <!--Thông tin giao hàng-->
+        <div class="tab-pane fade" id="ttgh" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="d-flex mt-2">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tên người nhận</th>
+                            <th scope="col">SĐT</th>
+                            <th scope="col">Địa chỉ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">@Model.TenNguoiNhan</th>
+                            <td>@Model.SDT</td>
+                            <td>@Model.DiaChi</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+</div>
+<script>
+     //Đổi trạng thái
+        function DoiTrangThai(trangthai){
+            var ans = confirm("Cập nhật trạng thái hóa đơn này?");
+            var id = "@Model.ID";
+            if(ans){
+                    $.ajax({
+                    url: "/Order/DoiTrangThai",
+                    type: "POST",
+                    data:{
+                        trangthai:trangthai,
+                        idhd: id,
+                    },
+                    success: function(response) {
+                        toastr.success(response.message, "Success Alert", { timeOut: 300 });
+                        billDetail(id);
+                    },
+                    error: function(err) {
+                        toastr.error('Thay đổi trạng thái thất bại', "Error Alert", { timeOut: 300 });
+                    }
+                });
+            }
+        console.log(trangthai);
+
+        }
+    function huyDon(IDHD) {
+        var gc = $("#ghiChuinTTHD").val();
+        console.log($("#ghiChuinTTHD").val())
+        if (gc === '' || gc == '@Model.Description') {
+            toastr.error('Vui lòng nhập ghi chú hóa đơn', "Error Alert", { timeOut: 300 });
+        } else {
+            var ans = confirm("Bạn có chắc chắn hủy Hóa đơn này?");
+            if (ans) {
+                $.ajax({
+                    url: "/Order/HuyHD",
+                    type: "GET",
+                    dataType: 'json',
+                    data: {
+                        idhd: IDHD,
+                        ghichu: gc,
+                    },
+                    contentType: 'application/json',
+                    success: function (response) {
+                        toastr.success(response.message, "Success Alert", { timeOut: 300 });
+                    },
+                    error: function (err) {
+                        toastr.error('Thay đổi trạng thái thất bại', "Error Alert", { timeOut: 300 });
+                    }
+                });
+
+            }
+        }
+    }
+</script>

@@ -1,0 +1,113 @@
+﻿<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <h1 class="breadcrumb-title">ANBISHOP - Cửa hàng bán quần áo</h1>
+        </div>
+    </div>
+</section>
+
+<section class="breadcrumb-ctn mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Giới thiệu và chính sách</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- start banner Area -->
+<section class="banner-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="box">
+                    <!-- about description -->
+                    <div class="box-head">
+                        <h1 class="head-title">Chào mừng đến với ANBISHOP</h1>
+                    </div>
+                    <div class="box-body">
+                        <p class="lead">
+                            ANBISHOP là cửa hàng bán quần áo chuyên cung cấp các sản phẩm thời trang cao cấp và bình dân phù hợp với mọi nhu cầu của khách hàng. Chúng tôi mang đến các mẫu thời trang đa dạng, từ áo sơ mi, áo thun, quần jean, đến các bộ sưu tập dành riêng cho mùa và xu hướng mới nhất.
+                            <br><br>
+                            Với các thương hiệu thời trang nổi tiếng và chất lượng dịch vụ hàng đầu, ANBISHOP cam kết mang lại trải nghiệm mua sắm tiện lợi và hài lòng. Quý khách có thể dễ dàng đặt hàng qua website và nhận được tư vấn từ đội ngũ nhân viên chuyên nghiệp.
+                        </p>
+                        <video controls class="custom-video" alt="Banner ANBISHOP">
+                            <source src="https://file.hstatic.net/200000891157/file/aristino_new_arrival_phong_thai_doanh_nhan.mp4" type="video/mp4">
+                            Trình duyệt của bạn không hỗ trợ video HTML5.
+                        </video>
+                    </div>
+                    <!-- /.about description -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- contact details -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h3>Thông tin liên hệ</h3>
+                <div class="contact-info">
+                    <p><strong>Địa chỉ:</strong> Số 17 Hoa Sứ, Phường 7, Quận Phú Nhuận, TP.HCM</p>
+                    <p><strong>Email:</strong> anbishop@shop.com</p>
+                    <p><strong>Điện thoại:</strong> 0912222222</p>
+                    <p><strong>Thời gian làm việc:</strong> Thứ hai đến chủ nhật - Từ 8:30 đến 21:00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="text-center mt-5">Google Map</h2>
+    <div id="map"></div>
+</section>
+
+<!-- Google Maps Script and Custom Styles -->
+<style>
+    /* Video size */
+    .custom-video {
+        max-width: 70%; /* Điều chỉnh kích cỡ video */
+        height: auto;
+        margin: 20px 0;
+    }
+
+    /* Text styling */
+     .box-head .head-title, .lead, .contact-info p {
+        color: #333333; /* Màu chữ nổi bật hơn trên nền sáng */
+    }
+
+    .breadcrumb-title, .box-head .head-title {
+        font-weight: bold;
+        font-size: 2rem; /* Kích thước chữ lớn hơn cho tiêu đề */
+    }
+
+    .breadcrumb-title{
+        color: #FF5733; 
+        font-weight: bold;
+        font-size: 2rem; /* Kích thước chữ */
+    }
+
+    /* Google Maps */
+    #map {
+        height: 400px;
+        width: 100%;
+        margin-top: 20px;
+    }
+</style>
+<script>
+    function initMap() {
+        var myLatLng = { lat: 21.032196, lng: 105.792278 }; // Thay thế bằng tọa độ của bạn
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: myLatLng
+        });
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'ANBISHOP'
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_ACTUAL_API_KEY&callback=initMap" async defer></script>
+

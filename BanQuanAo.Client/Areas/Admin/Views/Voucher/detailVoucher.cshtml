@@ -1,0 +1,59 @@
+﻿@using BanQuanAo.Share.Models;
+@model BanQuanAo.Share.Models.Voucher
+
+@{
+    ViewData["Title"] = "detailVoucher";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+
+}
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="GetallVoucher">Danh sách voucher</a></li>
+          <li class="breadcrumb-item active"><a asp-action="detailVoucher">Chi tiết</a></li>
+        </ul>    
+</div>
+<div>
+    <dl class="row">
+        <div class="col-12">
+            <dt class="col-sm-2">Voucher Type</dt>
+            
+            <dt class="col-sm-2">Code</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+            <dt class="col-sm-2">Quantity</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Quantity)
+            </dd>
+            <dt class="col-sm-2">Value</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Value)
+            </dd>
+            <dt class="col-sm-2">Minimum Order Value</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Minimum_order_value)
+            </dd>
+            <dt class="col-sm-2">Create Date</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Create_Date)
+            </dd>
+            <dt class="col-sm-2">Start Date</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Start_Date)
+            </dd>
+            <dt class="col-sm-2">End Date</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.End_Date)
+            </dd>
+            <dt class="col-sm-2">Status</dt>
+            <dd class="col-sm-4">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+        </div>
+    </dl>
+</div>
+<div>
+     <a class="btn btn-secondary" asp-action="GetallVoucher" >Quay lại</a>
+         
+</div>

@@ -1,0 +1,126 @@
+﻿.forgot {
+    /* width: 100%;*/
+    height: 100%;
+    background: #5433FF; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #A5FECB, #20BDFF, #5433FF); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #A5FECB, #20BDFF, #5433FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*margin-top: 3%;*/
+    padding: 3%;
+}
+
+.forgot-password {
+    display: flex;
+}
+
+@media (max-width: 991px) {
+    .forgot-password {
+        display: block;
+    }
+    .forgot-left img {
+        display: none;
+    }
+    .forgot-form{
+        margin-top: 5rem;
+    }
+}
+
+.forgot-left {
+    text-align: center;
+    color: #fff;
+    /*   margin-top: 4%;*/
+}
+
+    .forgot-left img {
+        /*    margin-top: 15%;
+    margin-bottom: 5%;*/
+        width: 100%;
+        -webkit-animation: mover 2s infinite alternate;
+        animation: mover 1s infinite alternate;
+    }
+
+-webkit-keyframes mover {
+    transform: translateY(0);
+    transform: translateY(-20px);
+}
+
+-keyframes mover {
+    transform: translateY(0);
+    transform: translateY(-20px);
+}
+
+.forgot .register-form {
+    padding: 10%;
+    margin-top: 10%;
+}
+
+.forgot .nav-tabs {
+    margin-top: 3%;
+    border: none;
+    background: #0062cc;
+    border-radius: 1.5rem;
+    width: 28%;
+    float: right;
+}
+
+    .forgot .nav-tabs .nav-link {
+        padding: 2%;
+        height: 34px;
+        font-weight: 600;
+        color: #fff;
+        border-top-right-radius: 1.5rem;
+        border-bottom-right-radius: 1.5rem;
+    }
+
+        .forgot .nav-tabs .nav-link:hover {
+            border: none;
+        }
+
+        .forgot .nav-tabs .nav-link.active {
+            width: 100px;
+            color: #0062cc;
+            border: 2px solid #0062cc;
+            border-top-left-radius: 1.5rem;
+            border-bottom-left-radius: 1.5rem;
+        }
+
+.forgot-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-forgot {
+    padding: 12px 30px;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    background-color: #576ee0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.forgot-form {
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    padding: 5rem;
+    background-color: #fff
+}
+
+    .forgot-form h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        color: #232323;
+    }
+.forgot-back a{
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: #777;
+}
+.forgot-back a:hover{
+    color: #576ee0;
+}

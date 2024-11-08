@@ -1,0 +1,20 @@
+﻿@model BanQuanAo.Share.ViewModels.ProductImageVM
+@{
+    ViewData["Title"] = "CreateImg";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<form asp-action="CreateImg" method="post" enctype="multipart/form-data">
+    <!-- In ra giá trị của TempData["IdPr"] để kiểm tra -->
+    <input asp-for="ProductDetailId" type="hidden" value="@ViewBag.IdPr" />
+
+    <div class="form-group">
+        <label class="control-label">Chọn ảnh</label>
+        <input type="file" asp-for="ImageFile" accept="image/*" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Thêm ảnh" class="btn btn-primary" />
+    </div>
+</form>
+
+

@@ -1,0 +1,93 @@
+﻿@using BanQuanAo.Share.Models;
+@model BanQuanAo.Share.Models.Product
+
+@{
+    ViewData["Title"] = "CreateProduct";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+    var proCategory = ViewData["productCategory"] as List<Category>;
+    var proBrand = ViewData["productBrand"] as List<Brand>;
+    var proMaterial = ViewData["productMaterial"] as List<Material>;
+}
+<div class="app-title">
+    <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+        <li class="breadcrumb-item active"><a asp-action="GetAllProduct">Danh sách sản phẩm</a></li>
+        <li class="breadcrumb-item active"><a asp-action="CreateProduct">Thêm mới </a></li>
+    </ul>
+</div>
+<div class="row">
+    <div class="container">
+        <form asp-action="CreateProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Danh mục</label>
+                <select asp-for="CategoryId" class="form-control">
+                    @foreach (var type in proCategory)
+                    {
+                        <option value="@type.Id">@type.CategoryName</option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Nhãn sản xuất</label>
+                <select asp-for="BrandId" class="form-control">
+                    @* <option>--Chọn nhãn sản xuất--</option> *@
+                    @foreach (var type in proBrand)
+                    {
+                        <option value="@type.Id">@type.BrandName</option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">Chất liệu</label>
+                <select asp-for="MaterialId" class="form-control">
+                    @* <option>--Chọn chất liệu--</option> *@
+                    @foreach (var type in proMaterial)
+                    {
+                        <option value="@type.Id">@type.MaterialName</option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Tên sản phẩm</label>
+                <input asp-for="ProductName" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Mô tả</label>
+                <input asp-for="Description" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Mô tả chi tiết</label>
+                <div class="form-group space-top"  style="margin-top: 70px;" >
+                    <!-- (2): textarea sẽ được thay thế bởi CKEditor -->
+                    <textarea asp-for="Long_Description" id="edit" name="edit" cols="200" rows="80"></textarea>
+
+                    <!-- (3): Code Javascript thay thế textarea có id='editor1' bởi CKEditor -->
+                    <script>
+
+                        CKEDITOR.replace('edit');
+
+                    </script>
+                </div>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <button class="btn btn-success m-1" type="submit">Thêm mới</button>
+                <a class="btn btn-secondary" asp-action="GetAllProduct">Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

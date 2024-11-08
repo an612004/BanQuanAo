@@ -1,0 +1,101 @@
+﻿@model BanQuanAo.Share.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-login">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Đăng nhập</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- End breadcumb Area -->
+<!--================Login Box Area =================-->
+<section class="login_box_area">
+    <div class="container shadow-lg">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="login_box_img">
+                    <img class="img-fluid" src="~/user/images/Login.gif" alt="">
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="login_form_inner">
+                    <h3>Đăng nhập</h3>
+                    <form id="loginForm" asp-action="Login" method="post">
+                        <div class="text-danger" asp-validation-summary="All"></div>
+
+                        <div class="col-md-12 form-group">
+                            <input type="text" asp-for="UserName" id="username" class="form-control"
+                                   placeholder="Tên đăng nhập">
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="password" asp-for="Password" id="password" class="form-control"
+                                   placeholder="Mật khẩu">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button type="button" onclick="handleLogin()" class="primary-btn btnLogin">Đăng nhập</button>
+                            <!-- Divider Text -->
+                            <div class="form-group col-lg-12 mx-auto d-flex align-items-center my-4">
+                                <div class="border-bottom w-100 ml-5"></div>
+                                <span class="px-2 small text-muted font-weight-bold text-muted">OR</span>
+                                <div class="border-bottom w-100 mr-5"></div>
+                            </div>
+                            <a asp-action="ForgotPassword" class="text-center custom-text-login font-weight-bold">Quên mật khẩu ?</a>
+                            <div class="login_form_register text-center font-weight-bold">
+                                Bạn chưa có tài khoản ?
+                                <a class="text-danger" asp-action="Register">Đăng ký</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Login Box Area =================-->
+<script>
+    async function handleLogin() {
+        const form = document.getElementById("loginForm");
+        const formData = new FormData(form);
+        const errorMessage = document.querySelector('.text-danger');
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Lưu token vào localStorage
+                localStorage.setItem("jwtToken", data.token);
+                // Chuyển hướng đến URL theo vai trò người dùng
+                window.location.href = data.redirectUrl;
+            } else {
+                // Hiển thị thông báo lỗi từ server
+                errorMessage.textContent = data.message || "Đăng nhập thất bại";
+            }
+        } catch (error) {
+            console.error("Lỗi khi đăng nhập:", error);
+            // Hiển thị lỗi kết nối
+            errorMessage.textContent = "Đã xảy ra lỗi khi kết nối, vui lòng thử lại!";
+        }
+    }
+</script>

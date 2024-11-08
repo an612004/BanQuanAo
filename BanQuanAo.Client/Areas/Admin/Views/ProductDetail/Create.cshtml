@@ -1,0 +1,196 @@
+﻿
+@model BanQuanAo.Share.ViewModels.ProductDetailVM
+
+@{
+    HttpClient _httpClient = new HttpClient();
+    ViewData["Title"] = "Thêm mới";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<style>
+input[type="file"]{
+    display: none;
+}
+#images{
+    width: 90%;
+    position: relative;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+figure{
+    width: 20%;
+}
+img{
+    width: 100%;
+}
+figcaption{
+    text-align: center;
+    font-size: 2.4vmin;
+    margin-top: 0.5vmin;
+}
+.delete-button {
+    background-color: red;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+    margin-top: 5px;
+    width: 100%;
+  }
+</style>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách chi tiết sản phẩm</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Create">Thêm mới </a></li>
+        </ul>    
+</div>
+<div class="row">
+    <div class="container">
+        <form id="product-form" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly"  class="text-danger" ></div>
+            @{
+                // Lấy giá trị của tham số 'id' từ URL hiện tại
+                string currentId = ViewContext.RouteData.Values["id"]?.ToString();
+            }
+            <div class="form-group">
+               @* <label class="control-label">Tên sản phẩm</label>
+                @{
+                    <select name="productId" onchange="this.value;" asp-items="@ViewBag.ProductProp" class="form-control">
+                   
+                </select>
+                
+                }
+                *@
+                <input type="hidden" name="productId" value="@currentId" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tên size</label>
+                @{
+                    <select name="sizeId" onchange="this.value;" asp-items="@ViewBag.Size" class="form-control">
+                    
+                </select>
+               
+                }
+                
+            </div>
+            <div class="form-group">
+                <label class="control-label">Tên màu</label>
+                @{
+                    <select name="colorId" onchange="this.value;" asp-items="@ViewBag.Color" class="form-control">
+                   
+                </select>
+                
+                }
+               
+            </div>
+            <div class="form-group">
+                <label class="control-label">Số lượng</label>
+                <input asp-for="Quantity" class="form-control" />
+               
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">Giá nhập</label>
+                <input asp-for="Price" class="form-control" />
+
+            </div>
+            <div class="form-group">
+                <label class="control-label">Giá bán</label>
+                <input asp-for="PriceSale" class="form-control" />
+               
+            </div>
+            
+          
+            <div class="form-group">
+                <label class="control-label">Mô tả</label>
+                <input asp-for="Description" class="form-control" />
+
+            </div>
+            
+            <div class="form-group">
+              <input type="file" id="file-input" asp-for="filecollection" accept="image/*" onchange="preview()" multiple>
+                @* <input type="file" id="file-input" asp-for="filecollection" accept="image/*" oninput="preview()" multiple> *@
+
+              <label for="file-input">
+                <i class="fas fa-upload"></i> Chọn ảnh
+              </label>
+              <p id="num-of-files">Không có file nào</p>
+              <div id="images"></div>
+            </div>
+            @*<div class="form-group">
+                <label  class="control-label">Trạng thái</label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>*@
+           <div class="form-group">
+                <button class="btn btn-success m-1" type="submit" >Tạo</button>
+                <a class="btn btn-secondary" asp-action="Show" >Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--Font Awesome Icons-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+<script>
+    let selectedImages = []; // Mảng để lưu giữ ảnh đã chọn
+</script>
+<script>
+    // let selectedImages = []; // Mảng để lưu giữ ảnh đã chọn
+    const maxAllowedFiles = 3; // Số lượng tối đa ảnh được chọn
+
+    function preview() {
+        let fileInput = document.getElementById("file-input");
+        let imageContainer = document.getElementById("images");
+        let files = Array.from(fileInput.files);
+        let newFiles = files.filter(file => !selectedImages.some(selectedImage => selectedImage.file.name === file.name));
+        console.log("OK");
+        // Kiểm tra nếu tổng số lượng ảnh sau khi thêm vào vượt quá giới hạn
+        if (selectedImages.length + newFiles.length > maxAllowedFiles) {
+            alert(`Bạn chỉ có thể chọn tối đa ${maxAllowedFiles} ảnh. Vui lòng bỏ bớt ảnh trước khi thử lại.`);
+            // Đặt lại input file 
+            fileInput.value = '';
+            return;
+        }
+
+        // Thêm các file mới vào danh sách và hiển thị
+        newFiles.forEach(file => {
+            let imageUrl = URL.createObjectURL(file);
+            let figure = document.createElement("figure");
+            let deleteButton = document.createElement("button");
+            deleteButton.textContent = "Xoá";
+            deleteButton.classList.add("delete-button");
+            deleteButton.onclick = function () {
+                deleteImage(figure, file);
+            };
+
+            figure.appendChild(deleteButton);
+
+            let img = document.createElement("img");
+            img.setAttribute("src", imageUrl);
+            figure.insertBefore(img, deleteButton);
+
+            selectedImages.push({ file: file, imageUrl: imageUrl });
+            imageContainer.appendChild(figure);
+        });
+        updateNumOfFiles();
+    }
+    function deleteImage(figure, file) {
+        URL.revokeObjectURL(file.imageUrl); // Giải phóng bộ nhớ
+        figure.remove();
+        selectedImages = selectedImages.filter(selectedImage => selectedImage.file !== file);
+        updateNumOfFiles();
+    }
+    function updateNumOfFiles() {
+        let numOfFiles = document.getElementById("num-of-files");
+        numOfFiles.textContent = `${selectedImages.length} ảnh đã chọn`;
+    }
+</script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

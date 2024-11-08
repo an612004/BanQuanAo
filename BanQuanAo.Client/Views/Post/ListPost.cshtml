@@ -1,0 +1,90 @@
+﻿@using HtmlAgilityPack;
+@model X.PagedList.IPagedList<BanQuanAo.Share.Models.Post>
+@using X.PagedList.Mvc.Core;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@{
+    ViewData["Title"] = "Danh sách bài viết";
+  
+}
+<style>
+
+
+    .post {
+        display: flex;
+        align-items: center;
+        width: 100%; /* Change this line */
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    }
+
+    .post-image {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+    }
+
+    .post-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .post-content p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+</style>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        </div>
+    </div>
+</section>
+<section class="breadcrumb-ctn mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Bài Đăng</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<div class="container">
+    <div class="post-container">
+        @foreach (var item in Model)
+        {
+            <a href="/Post/DetailPost/@item.Id" class="post-link">
+                <div class="post">
+                    <img src="@(Configuration["BaseAddress"]+item.TittleImage)" alt="Ảnh minh họa" class="post-image">
+                    <div class="post-content">
+                        <h2 class="post-title">@item.Tittle</h2>
+                        @{
+                            HtmlDocument doc = new HtmlDocument();
+                            doc.LoadHtml(@item.Contents);
+                            string contentText = doc.DocumentNode.InnerText;
+                            string first30Chars = contentText.Substring(0, Math.Min(145, contentText.Length));
+                        }
+                        <p>@Html.Raw(first30Chars) ....</p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+    <div class="col-lg-12 mt-3 p-3 pagin-history">
+        <div class="shadow-sm">
+            <div class="pagin-left float-left font-weight-lighter mt-1">
+                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+            </div>
+            <div class="pagin-right float-right">
+                @Html.PagedListPager(Model, page => Url.Action("ListPost", new { page}))
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

@@ -1,0 +1,68 @@
+﻿@using BanQuanAo.Share.Models;
+@model BanQuanAo.Share.Models.Voucher
+
+@{
+    ViewData["Title"] = "editVoucher";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="GetallVoucher">Danh sách voucher</a></li>
+          <li class="breadcrumb-item active"><a asp-action="editVoucher">Cập nhật </a></li>
+        </ul>    
+</div>
+<div class="row">
+    <div class="container">
+        <form asp-action="editVoucher">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Chi tiết</label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <span class="text-danger">@ViewData["description"]</span>
+            </div>
+
+            <div class="form-group">
+                <label  class="control-label">Số lượng</label>
+                <input asp-for="Quantity" class="form-control" />
+                <span class="text-danger">@ViewData["SoLuong"]</span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Giá trị đơn hàng</label>
+                <input asp-for="Minimum_order_value" class="form-control" />
+                <span class="text-danger">@ViewData["SoTienCan"]</span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Ngày bắt đầu</label>
+                <input asp-for="Start_Date" class="form-control" />
+              
+                <span class="text-danger">@ViewData["NgayBd"]</span>
+            </div>
+            <div class="form-group">
+                <label  class="control-label">Ngày kết thúc</label>
+                <input asp-for="End_Date" class="form-control" />
+                <span class="text-danger">@ViewData["Ngay"]</span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="Status" class="control-label">Trạng thái</label>
+                <select asp-for="Status" class="form-select">
+                    <option value="true" selected>Đang hoạt động</option>
+                    <option value="false">Ngưng hoạt động</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <button class="btn btn-success m-1" type="submit" >Cập nhật</button>
+                <a class="btn btn-secondary" asp-action="GetallVoucher" >Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

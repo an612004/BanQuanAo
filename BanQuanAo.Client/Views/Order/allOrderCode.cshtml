@@ -1,0 +1,133 @@
+﻿@model BanQuanAo.Share.ViewModels.QLHDViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    
+}
+
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-Models-center justify-content-end">
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-login">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Thông tin đơn hàng</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<div class="colorlib-product">
+    <div class="container">
+        <div class="row row-pb-lg">
+            <div class="col-md-12">
+                <div class="cart-table table-responsive">
+
+                    <table class="table tbl-history">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a class="custom-txt-history">
+                                        <span>Mã đơn hàng</span><i class="bx bxs-sort-alt ml-2"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a class="custom-txt-history">
+                                        <span>Ngày đặt</span><i class="bx bxs-sort-alt ml-2"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <a class="custom-txt-history">
+                                        <span>Tổng tiền thanh toán</span><i class="bx bxs-sort-alt ml-2"></i>
+                                    </a>
+                                </th>
+                                <th>
+                                    <p>Ngày thanh toán</p>
+                                </th>
+                                <th>
+                                    <p>Trạng thái</p>
+                                </th>
+
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => modelItem.OrderCode)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => modelItem.Create_Date)
+                                    </td>
+                                    <td>
+                                        @string.Format("{0:0,0 VND}", Model.TotalAmoutAfterApplyingVoucher)
+                                    </td>
+                                    <td>
+                                        @if (Model.Payment_Date == null)
+                                        {
+                                            <p>Chờ thanh toán</p>
+                                        }
+                                        else
+                                        {
+                                            <p>@Model.Payment_Date</p>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (Model.OrderStatusId == Guid.Parse("1C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Đang được xử lý</p>
+                                        }
+                                        else if (Model.OrderStatusId == Guid.Parse("2C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Chờ lấy hàng</p>
+                                        }
+                                        else if (Model.OrderStatusId == Guid.Parse("3C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Đang giao hàng</p>
+                                        }
+                                        else if (Model.OrderStatusId == Guid.Parse("4C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Giao hàng thành công</p>
+                                        }
+                                        else if (Model.OrderStatusId == Guid.Parse("5C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Giao hàng không thành công</p>
+                                        }
+                                        else if (Model.OrderStatusId == Guid.Parse("6C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Huỷ đơn</p>
+                                        }
+                                        else if (Model.OrderStatusId == Guid.Parse("9C54C2DD-2FA5-4041-9B94-FB613BEBDFBC"))
+                                        {
+                                            <p>Chờ thanh toán</p>
+                                        }
+
+                                    </td>
+
+                                    <td class="custom-history">
+                                        <a class="primary-btn custom-history-details" href="@Url.Action("OrderDetails", "Order", new { idHoaDon = Model.Id })">
+                                            <i class='bx bx-detail bx-sm'></i>
+                                        </a>
+                                        
+                                    </td>
+                                </tr>
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+         
+
+        </div>
+    </div>
+</div>

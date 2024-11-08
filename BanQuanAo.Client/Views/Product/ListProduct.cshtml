@@ -1,0 +1,394 @@
+﻿@using BanQuanAo.Share.Models;
+@using System.Linq;
+@using BanQuanAo.Share.ViewModels;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration;
+@model X.PagedList.IPagedList<BanQuanAo.Share.ViewModels.ProductVM>;
+@using X.PagedList.Mvc.Core;
+@{
+
+    List<ProductDetailVM> productDetail = ViewData["productDetail"] as List<ProductDetailVM>;
+    List<ProductImage> ProductImage = ViewData["ProductImage"] as List<ProductImage>;
+
+    var productCategory = ViewData["productCategory"] as List<SelectListItem>;
+    var SelectedCategory = ViewBag.SelectedCategories as Guid?[];
+    Guid[] selectedCategoryIds = SelectedCategory?.Select(x => x.Value).ToArray();
+
+    var productBrand = ViewData["productBrand"] as List<SelectListItem>;
+    var SelectedBrand = ViewBag.SelectedBrand as Guid?[];
+    Guid[] selectedBrandIds = SelectedBrand?.Select(x => x.Value).ToArray();
+
+
+    var productMaterial = ViewData["productMaterial"] as List<SelectListItem>;
+    var SelectedMaterial = ViewBag.SelectedBrand as Guid?[];
+    Guid[] selectedMaterialIds = SelectedMaterial?.Select(x => x.Value).ToArray();
+
+}
+<style>
+    .custom-sidenav {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .has-sub {
+        margin-bottom: 10px;
+    }
+
+        .has-sub > a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+            border-bottom: 1px solid #ddd; /* Thêm đường kẻ ngăn cách giữa các mục */
+        }
+
+        .has-sub ul {
+            display: none;
+            list-style: none;
+            padding: 0;
+        }
+
+            .has-sub ul li {
+                margin: 0;
+            }
+
+                .has-sub ul li a {
+                    display: block;
+                    padding: 10px;
+                    text-decoration: none;
+                    color: #333;
+                }
+
+    .checkbox-list {
+        margin-left: 15px; /* Lùi sang phải 1 tí */
+    }
+
+    .top-filter-head {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .filter-content {
+        margin-top: 10px;
+    }
+
+    .form-row {
+        margin-bottom: 10px;
+    }
+
+    .search-btn-product {
+        margin-top: 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .search-btn-product i {
+            margin-right: 5px;
+        }
+
+</style>
+@*Lưu trạng thái khi lọc*@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var sortOrder = document.getElementById('sortOrder');
+        var savedValue = sessionStorage.getItem('selectedValue');
+
+        if (savedValue) {
+            sortOrder.value = savedValue;
+        }
+
+        sortOrder.addEventListener('change', function () {
+            sessionStorage.setItem('selectedValue', this.value);
+            this.form.submit();
+        });
+    });
+</script>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        </div>
+    </div>
+</section>
+
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-ctn mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- End breadcumb Area -->
+<!-- End Banner Area -->
+<form method="get" action="@Url.Action("ListProduct")" id="filterForm">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-xl-3 col-lg-4 col-md-5">
+                <div class="sidebar-filter mt-50">
+                    <div class="top-filter-head">Danh mục</div>
+                    <div class="common-filter">
+                        <!-- sidenav-section -->
+                        <div id="cssmenu" class="custom-sidenav">
+                            <ul>
+                                <li class="has-sub">
+                                    <a href="#">Hãng sản xuất</a>
+                                    <ul>
+                                        @foreach (var item in productBrand)
+                                        {
+                                            <li class="even">
+                                                <label>
+                                                    <input type="checkbox" name="SelectedBrand" value="@item.Value" @(selectedBrandIds != null && selectedBrandIds.Select(x => x.ToString()).Contains(item.Value) ? "checked='checked'" : "")>
+                                                    <span class="checkbox-list">@item.Text</span>
+                                                </label>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                                <li class="has-sub">
+                                    <a href="#">Loại Sản phẩm</a>
+                                    <ul>
+                                        @foreach (var item in productCategory)
+                                        {
+                                            <li class="even">
+                                                <label>
+                                                    <input type="checkbox" name="SelectedCategory" value="@item.Value" @(selectedCategoryIds != null && selectedCategoryIds.Select(x => x.ToString()).Contains(item.Value) ? "checked='checked'" : "")>
+                                                    <span class="checkbox-list">@item.Text</span>
+                                                </label>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                                <li class="has-sub">
+                                    <a href="#">Chất liệu</a>
+                                    <ul>
+                                        @foreach (var item in productMaterial)
+                                        {
+                                            <li class="even">
+                                                <label>
+                                                    <input type="checkbox" name="SelectedMaterial" value="@item.Value" @(selectedMaterialIds != null && selectedMaterialIds.Select(x => x.ToString()).Contains(item.Value) ? "checked='checked'" : "")>
+                                                    <span class="checkbox-list">@item.Text</span>
+                                                </label>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                                <li class="has-sub">
+                                    <a href="#">Giá Bán</a>
+                                    <ul>
+                                        <li class="even">
+                                            <div class="filter-content collapse show" id="collapse_3">
+                                                <div class="inner">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label>Min</label>
+                                                            <input class="form-control" placeholder="0đ" name="minPrice" type="number" min="0" value="">
+                                                        </div>
+                                                        <div class="form-group text-right col-md-6">
+                                                            <label>Max</label>
+                                                            <input class="form-control" placeholder="10 000đ" name="maxPrice" type="number" min="0" value="">
+                                                        </div>
+                                                    </div> <!-- form-row.// -->
+                                                </div> <!-- inner.// -->
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <button class="search-btn-product primary-btn d-flex"><i class="bx bx-search-alt"></i></button>
+                        </div>
+                        <!-- /.sidenav-section -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-8 col-md-7">
+                <!-- Start Filter Bar -->
+                <div class="filter-bar d-flex flex-wrap align-items-center">
+                    <div class="sorting custom-sort-product">
+                        <form asp-controller="Product" asp-action="Filter" method="get">
+                            <div class="select-option form-group">
+                                <select id="sortOrder" name="sortOrder" class="form-control" placeholder="Sắp xếp theo">
+                                    <option value="" default="">Sắp xếp theo</option>
+                                    <option value="low-price">Giá Thấp</option>
+                                    <option value="high-price">Giá Cao</option>
+                                    <option value="a">A-Z</option>
+                                    <option value="z">Z-A</option>
+                                </select>
+                                <input type="submit" style="display: none;" />
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+                <!-- End Filter Bar -->
+                <!-- Start Best Seller -->
+                <section class="lattest-product-area category-list">
+                    <div class="row" data-aos="fade-up">
+                        <!-- single product -->
+                        @foreach (var item in Model)
+                        {
+                            IEnumerable<ProductDetailVM> LstProductDetail = productDetail.Where(c => c.ProductId == item.Id); // lấy list productdetail
+                            if (LstProductDetail.Any())
+                            {
+
+                                var productDetailID = LstProductDetail.First().Id; // lấy id productdetail đầu tiên
+
+                                var lstProductImage = ProductImage.Where(c => c.ProductDetailId == productDetailID); // lấy list img
+
+                                var imgFirst = lstProductImage.First().ImageUrl; // lấy img đầu tiên
+                                                                                 ////////////
+                                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                                    <div class="single-product">
+                                        <a href="/Product/ProductDetail/@item.Id">
+                                            <div class="img-prd-animation">
+                                                <div class="img-fluid">
+                                                    <img class="" src="@(Configuration["BaseAddress"]+imgFirst)" />
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="product-details mt-3">
+                                            <h6 class="custom-title-product">
+                                                <a class="text-decoration-none text-link-hover" 
+                                                   href="/Product/ProductDetail/@item.Id">
+                                                    @item.ProductName
+                                                </a>
+                                            </h6>
+                                            <div class="price d-flex">
+                                                @if (item.MinPrice == item.MaxPrice )
+                                                {
+
+                                                    <h6 class="d-flex">@item.MinPrice?.ToString("n0") đ<span class="text-lowercase"></span></h6>
+                                                }
+                                                else
+                                                {
+
+                                                    <h6 class="d-flex">@item.MinPrice?.ToString("n0") đ  - @item.MaxPrice?.ToString("n0") đ <span class="text-lowercase"></span></h6>
+                                                }
+                                            </div>
+                                            <div class="prd-bottom">
+                                                <a class="addProduct social-info" href="/Product/ProductDetail/@item.Id">
+                                                    <span class='bx bx-basket'></span>
+                                                    <p class="hover-text">Chi tiết</p>
+                                                </a>
+                                                <a href="/Product/ProductDetail/@item.Id" class="social-info">
+                                                    <span class='bx bx-move'></span>
+                                                    <p class="hover-text">Xem Thêm</p>
+                                                </a>
+                                                <a onclick="addToWishList('@item.Id')" class="social-info">
+                                                    <span class='bx bx-purchase-tag-alt bx-rotate-180'></span>
+                                                    <p class="hover-text">Yêu thích</p>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                var stt = 1;
+                            }
+                        }
+                        <!-- single product -->
+                    </div>
+                </section>
+                <!-- End Best Seller -->
+            </div>
+        </div>
+    </div>
+</form>
+<div class="col-lg-12 mt-3 p-3 pagin-history">
+    <div class="shadow-sm">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center">
+                <!-- Đây là phần mới -->
+                <div class="pagin-left font-weight-lighter">
+                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                </div>
+                <div class="pagin-right ml-auto">
+                    @Html.PagedListPager(Model, page => Url.Action("ListProduct", new { page,SearchString = ViewBag.SearchString,SelectedCategory = ViewBag.SelectedCategory,SelectedBrand = ViewBag.SelectedBrand,SelectedMaterial =ViewBag.SelectedMaterial,minPrice=ViewBag.minPrice,maxPrice=ViewBag.maxPrice,sortOrder=ViewBag.sortOrder}))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/file/user/js/jquery.min.js" type="text/javascript"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="~/file/user/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/file/user/js/menumaker.js" type="text/javascript"></script>
+<script type="text/javascript" src="~/file/user/js/jquery.sticky.js"></script>
+<script type="text/javascript" src="~/file/user/js/sticky-header.js"></script>
+<script type="text/javascript">
+    (function ($) {
+        $(document).ready(function () {
+            $('#cssmenu ul ul li:odd').addClass('odd');
+            $('#cssmenu ul ul li:even').addClass('even');
+            $('#cssmenu > ul > li > a').click(function () {
+                $('#cssmenu li').removeClass('active');
+                $(this).closest('li').addClass('active');
+                var checkElement = $(this).next();
+                if ((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+                    $(this).closest('li').removeClass('active');
+                    checkElement.slideUp('normal');
+                }
+                if ((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+                    $('#cssmenu ul ul:visible').slideUp('normal');
+                    checkElement.slideDown('normal');
+                }
+                if ($(this).closest('li').find('ul').children().length == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        });
+    })(jQuery);
+</script>
+<script>
+    function addToWishList(productId) {
+        $.ajax({
+            type: "POST",
+            url: "/Product/WishList",
+            data: { ProductId: productId },
+            success: function (response) {
+                if (response.success) {
+                    // Hiển thị SweetAlert khi thêm thành công
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: 'Sản phẩm đã được thêm vào danh sách yêu thích.',
+                        showConfirmButton: true, // Hiển thị nút xác nhận
+                        confirmButtonText: 'Xem danh sách yêu thích', // Text cho nút xác nhận
+                        timer: 3000
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Nếu người dùng ấn xác nhận, chuyển hướng đến trang danh sách yêu thích
+                            window.location.href = "/Product/ShowWishList";
+                        }
+                    });
+                } else {
+                    // Hiển thị SweetAlert khi có lỗi
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.errorMessage || 'Có lỗi xảy ra khi thêm sản phẩm vào danh sách yêu thích.'
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                // Xử lý khi có lỗi
+                console.log(error);
+                // Hiển thị thông báo lỗi cho người dùng
+            }
+        });
+    }
+</script>

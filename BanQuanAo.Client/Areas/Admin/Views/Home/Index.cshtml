@@ -1,0 +1,232 @@
+﻿@using BanQuanAo.Share.ViewModels
+
+@model ThongKeViewModel
+@{
+    ViewData["Title"] = "ThongKe";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<style>
+    .customer-list {
+        list-style: none;
+        padding: 0;
+    }
+
+        .customer-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #ddd; /* Đường kẻ giữa các hàng */
+        }
+
+            .customer-list li:last-child {
+                border-bottom: none; /* Loại bỏ đường kẻ ở hàng cuối cùng */
+            }
+
+
+            .customer-list li .sdt,
+            .customer-list li .tongtien,
+            .customer-list li .tonghoadon {
+                flex-grow: 1;
+                margin-right: 8px;
+            }
+
+
+</style>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-secondary mb-3" >
+            <div class="card-header">Số lượng thành viên</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.SoLuongThanhVien</h5>
+                <a style="color:white" asp-area="Admin" asp-controller="User" asp-action="Index"> <p class="card-text">Xem thêm</p> </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3" >
+            <div class="card-header">Số đơn hàng chờ</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.SoLuongDonHang</h5>
+                <a style="color:white" asp-area="Admin" asp-controller="Order" asp-action="ShowList"> <p class="card-text">Xem thêm</p> </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-dark bg-info mb-3" >
+            <div class="card-header">Số lượng sản phẩm trong kho</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.SoLuongSanPham</h5>
+                <a style="color:white" asp-area="Admin" asp-controller="Product" asp-action="GetAllProduct"> <p class="card-text">Xem thêm</p> </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-header">Số lượng đơn bị huỷ</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.SoLuongDonHuy</h5>
+                <a style="color:white" asp-area="Admin" asp-controller="Order" asp-action="ShowList"> <p class="card-text">Xem thêm</p> </a>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div class="row">
+    <div class="d-flex justify-content-end" style="margin-right:10px;margin-bottom:10px">
+        <p style="margin-right:10px">Thời gian:</p><input type="text" id="daterange" value="12/01/2024 - 12/31/2024" class="form-control" style="width:30%;" />
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            
+            <div class="card-block">
+                <canvas id="barChart" class="ct-chart-line " style="width: 100%!important; height: 330px; margin: 0 auto"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-8 col-lg-12">
+        <div class="card" style="height:300px">
+            <div class="card-block">
+                <canvas id="lineChart" style="width: 90%; height: 230px; margin: 0 auto"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-12">
+        <div class="card" style="height:300px">
+            <div class="card-block">
+                <h3 style="margin:8px">Top khách mua nhiều</h3>
+                <ul class="customer-list">
+                    @{
+                        @foreach (var khachHang in Model.topKhachHang.OrderByDescending(kh => kh.tongtien))
+                        {
+                            <li>
+                                <span class="sdt">SDT: @khachHang.sdt</span>
+                                <span class="tongtien">Tổng tiền: @khachHang.tongtien?.ToString("n0")</span>
+                                <span class="tonghoadon">Tổng đơn: @khachHang.tonghoadon</span>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- 2-1 block end -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(function () {
+        $('#daterange').daterangepicker({
+            opens: 'left',
+            startDate: '@Model.Start',
+            endDate: '@Model.End'
+        }, function (start, end, label) {
+            location.href = "/Admin/Home/Index?startDate=" + start.format('YYYY-MM-DD') + "&endDate=" + end.format('YYYY-MM-DD');
+        });
+    });
+    @{
+        var colorPalette = new[] { "#FF5733", "#33FF57", "#5733FF", "#FF33A8", "#33A8FF" };
+    }
+
+    var labelBars = [];
+    var dataBars = [];
+    var backgroundColors = [];
+
+    @for (int i = 0; i < Model.BieuDoCot.Count; i++)
+    {
+        var x = Model.BieuDoCot[i];
+        @:labelBars.push('@Html.Raw(x.TenSP)')
+        @:dataBars.push(@x.SoLuong)
+
+        // Chọn màu từ mảng màu và thêm vào mảng backgroundColors
+        @:backgroundColors.push('@colorPalette[i % colorPalette.Length]')
+    }
+
+    var barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: labelBars,
+            datasets: [{
+                label: 'Sản phẩm bán chạy',
+                data: dataBars,
+                backgroundColor: backgroundColors,
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    var labelLines = [];
+    var dataLines = [];
+    var dataProfit = []; 
+
+    @foreach (var x in Model.BieuDoDuong)
+    {
+        @:labelLines.push('@x.Ngay.ToString("MM/dd/yyyy")')
+        @:dataLines.push(@x.DoanhThu)
+        @:dataProfit.push(@x.LoiNhuan) // Giả sử bạn có dữ liệu lợi nhuận trong Model.BieuDoDuong
+    }
+
+    var lineChart = new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: labelLines,
+            datasets: [
+                {
+                    label: 'Doanh thu',
+                    data: dataLines,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Lợi nhuận',
+                    data: dataProfit,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+
+</script>
+<script>
+    var $window = $(window);
+    var nav = $('.fixed-button');
+    $window.scroll(function () {
+        if ($window.scrollTop() >= 200) {
+            nav.addClass('active');
+        }
+        else {
+            nav.removeClass('active');
+        }
+    });
+</script>
+
+
+
+
+

@@ -1,0 +1,33 @@
+﻿@model BanQuanAo.Share.Models.Brand
+@{
+    ViewData["Title"] = "CreateBrand";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="GetAllBrand">Danh sách nhãn sản xuất</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Create">Thêm mới</a></li>
+        </ul>    
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Tên nhãn</label>
+                <input asp-for="BrandName" class="form-control" />
+                <span asp-validation-for="BrandName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success m-1" type="submit" >Tạo</button>
+                <a class="btn btn-secondary" asp-action="GetAllBrand" >Quay lại</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

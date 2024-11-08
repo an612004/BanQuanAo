@@ -1,0 +1,39 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Material>
+@{
+    ViewData["Title"] = "GetAllMaterial";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+<h4>Danh sách chất liệu</h4>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="GetAllMaterial">Danh sách chất liệu</a></li>
+        </ul>    
+</div>
+<p>
+    <a asp-action="Create"  class="btn btn-success m-1">Thêm mới chất liệu</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên chất liệu
+            </th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialName)
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm " type="button" href="Edit/@item.Id" title="Sửa"><i class="fa fa-edit"></i></a>
+                
+                <a class="btn btn-danger btn-sm " type="button" href="Delete/@item.Id" title="Xóa"><i class="fas fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

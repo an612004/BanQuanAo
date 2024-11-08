@@ -1,0 +1,29 @@
+﻿@media (max-width: 991px) {
+    .details-prd {
+        margin-left: 15px;
+        margin-top: 20px;
+    }
+}
+
+.text-minicart a:hover {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.text-custom-minicart {
+    background-color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+    .text-custom-minicart:hover {
+        background-color: #fff !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+.minicart-button a:hover {
+    box-shadow: 0 0 5px #576ee0, 0 0 10px #576ee0, 0 0 25px #576ee0, 0 0 50px #576ee0;
+    /*  box-shadow: 0 0 5px #576ee0, 0 0 25px #576ee0, 0 0 50px #576ee0, 0 0 200px #576ee0;*/
+}

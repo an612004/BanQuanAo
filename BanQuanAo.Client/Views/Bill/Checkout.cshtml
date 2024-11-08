@@ -1,0 +1,393 @@
+﻿@using BanQuanAo.Share.Models;
+@{
+    long tienShip = 0;
+    string? tongtien = TempData.Peek("TongTien") as string;
+    string? soLuong = TempData.Peek("SoLuong") as string;
+    var user = ViewData["user"] as User;
+}
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        </div>
+    </div>
+</section>
+
+<!-- Start breadcumb Area -->
+<section class="breadcrumb-ctn mt-3">
+    <div class="container">
+        <nav aria-label="breadcrumb ">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+<!-- End breadcumb Area -->
+<!-- End Banner Area -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <div class="row">
+                <div class="col-lg-8 col-md-6">
+                    <h6 class="checkout__title">Chi tiết thanh toán</h6>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="checkout__input">
+                                <label for="ten">Tên</label>
+                                <input type="text" class="form-control" id="name" placeholder="" required="" style="height:38px" value="@user.UserName">
+                                <div class="invalid-feedback"> Không để trống tên</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="checkout__input">
+                                <label for="sdt">SĐT</label>
+                                <input type="text" class="form-control" id="phone" placeholder="" required="" style="height:38px" value="@user.PhoneNumber">
+                                <div class="invalid-feedback"> Không để trống SDT </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="checkout__input">
+                                <label for="tinh">Tỉnh</label>
+                                <select class="custom-select d-block" id="province" required="">
+                                    <option selected id="dfprovince">--------------------Chọn tỉnh--------------------</option>
+                                </select>
+                                <div class="invalid-feedback"> Tên Tỉnh là bắt buộc. </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="checkout__input">
+                                <label for="huyen">Huyện</label>
+                                <select class="custom-select d-block w-100" id="district" required="">
+                                </select>
+                                <div class="invalid-feedback"> Tên Huyện là bắt buộc. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="checkout__input">
+                                <label for="xa">Xã</label>
+                                <select class="custom-select d-block w-100" id="ward" required="">
+                                </select>
+                                <div class="invalid-feedback"> Tên Xã là bắt buộc. </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="checkout__input">
+                                <label for="diachi">Địa chỉ</label>
+                                <input type="text" class="form-control" id="address" placeholder="" required="" style="height:38px">
+                                <div class="invalid-feedback"> Valid first name is required. </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="checkout__input">
+                                <label for="pttt">Phương thức thanh toán</label>
+                                <div style="box-shadow:0 0 0 1px #d9d9d9;border-radius:0.25rem">
+                                    <div style="display:flex!important;align-items:center;padding:0.8rem">
+                                        <input type="radio" name="pttt" value="COD" style="margin-bottom: 0px;width:20px;" />
+                                        <img style="padding-left:0.75rem" src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6">
+                                        <p style="margin-bottom: 0px;padding-left: 10px;">Thanh toán khi giao hàng (COD)</p>
+                                    </div>
+                                    <div style="border-top: 1px solid #d9d9d9;display:flex!important;align-items:center;padding:0.8rem">
+                                        <input type="radio" name="pttt" value="VNPay" style="margin-bottom: 0px;width:20px" />
+                                        <div style="width:40px;height:40px;margin-left:0.75rem;border:1px solid #d9d9d9;border-radius:0.25rem">
+                                            <img style="width:30px;height:30px;margin:5px" src="https://hstatic.net/0/0/global/design/seller/image/payment/vnpay.svg?v=6">
+                                        </div>
+                                        <p style="margin-bottom: 0px;padding-left: 10px;">Chuyển khoản qua VNPay</p>
+                                    </div>
+                                </div>
+
+                                <div id="pttt-error" style="display:none;color:red">Vui lòng chọn phương thức thanh toán</div>
+
+                                <div id="pttt-error" style="display:none;color:red; font-size:12px;">Vui lòng chọn phương thức thanh toán</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="checkout__input">
+                                <label for="ten">Ghi chú</label>
+                                <textarea class="form-control" id="note" placeholder="" value=""></textarea>
+                                <div class="invalid-feedback"> Không để trống tên</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="cart__discount" style="margin-bottom:20px!important">
+                        <h6>Hình thức giảm giá</h6>
+                        <div style="position:relative;margin-bottom:5px">
+                            <input type="text" id="voucher" placeholder="Nhập mã giảm giá" style="font-size:14px;color:#b7b7b7;height: 50px;width: 100%;border: 1px solid #e1e1e1;padding-left: 20px;" list="vouchers" />
+                            <datalist id="vouchers">
+                            </datalist>
+                            <button onclick="usevoucher()" style="font-size: 14px;color: #ffffff;font-weight: 700;letter-spacing: 2px;text-transform: uppercase;background: #111111;padding: 0 30px;border: none;position: absolute;right: 0;top: 0;height: 100%;">
+                                Áp dụng
+                            </button>
+                        </div>
+                    </div>
+                    <div class="checkout__order">
+                        <h4 class="order__title">Đơn hàng của bạn</h4>
+                        <ul class="checkout__order__products">
+                            <li>Tiền hàng <span id="tienHang"></span></li>
+                            <li id="moneyvoucher" hidden></li>
+                            <li>Tiền ship <span id="fee">0 VND</span></li>
+                            <li>Tổng tiền <span id="total"></span></li>
+                        </ul>
+                        <button onclick="createhoadon()" class="btn btn-success">
+                            XÁC NHẬN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    var voucher = "";
+    var tienVoucher = 0;
+    var tienShip = 0;
+    var VoucherId = "";
+
+    $(document).ready(function () {
+        var tienHang = @tongtien;
+        document.getElementById("tienHang").innerHTML = tienHang.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+        document.getElementById("total").innerHTML = tienHang.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+        $.ajax({
+            type: "GET",
+            url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/province",
+            headers: { token: '9f4e42e4-fde8-11ed-a281-3aa62a37e0a5' },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                // Xóa các option hiện tại trong dropdown
+                $("#province").empty();
+                $('#dfprovince').remove();
+                // Thêm option mặc định
+                $("#province").append('<option disabled selected hidden>Vui lòng chọn tỉnh</option>');
+                for (var i = 0; i < data.data.length; i++) {
+                    var option = $("<option>").val(data.data[i].ProvinceID).text(data.data[i].ProvinceName);
+                    $("#province").append(option);
+                }
+            },
+            error: function (response) {
+                console.error(response);
+            }
+        });
+
+        $("#province").change(function () {
+            var provinceId = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" + provinceId,
+                headers: { token: '9f4e42e4-fde8-11ed-a281-3aa62a37e0a5' },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#district").empty();
+
+                    // Thêm option mặc định
+                    $("#district").append('<option disabled selected hidden>Vui lòng chọn huyện</option>');
+                    for (var i = 0; i < data.data.length; i++) {
+                        var option = $("<option>").val(data.data[i].DistrictID).text(data.data[i].DistrictName);
+                        $("#district").append(option);
+                    }
+                },
+                error: function (response) {
+                    console.error(response);
+                }
+            });
+        });
+
+        $("#district").change(function () {
+            var districtId = $(this).val();
+            $.ajax({
+                type: "GET",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + districtId,
+                headers: { token: '9f4e42e4-fde8-11ed-a281-3aa62a37e0a5' },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#ward").empty();
+
+                    // Thêm option mặc định
+                    $("#ward").append('<option disabled selected hidden>Vui lòng chọn Xã</option>');
+                    for (var i = 0; i < data.data.length; i++) {
+                        var option = $("<option>").val(data.data[i].WardCode).text(data.data[i].WardName);
+                        $("#ward").append(option);
+                    }
+                },
+                error: function (response) {
+                    console.error(response);
+                }
+            });
+        });
+        $("#ward").change(function () {
+            var value1 = document.getElementById("ward").value;
+            var value2 = document.getElementById("district").value;
+            //xa = document.getElementById(value1).innerHTML;
+            $.ajax({
+                type: "GET",
+                url: "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?shop_id=4643378?to_ward_code=" + value1 + "&to_district_id=" + value2 + "&weight=" + 500 * @soLuong + "&service_type_id=2",// 500*1 trong đó 1 là số lượng *********************
+                headers: { token: '9f4e42e4-fde8-11ed-a281-3aa62a37e0a5' },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $('#dfward').remove();
+                    tienShip = data.data.total;
+                    console.log("API Response:", data); // Log phản hồi từ API để kiểm tra dữ liệu
+
+                    // Cập nhật giá trị của thẻ span có id là "fee" để hiển thị tiền ship mới
+                    document.getElementById("fee").innerHTML = data.data.total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                    var total = tienShip + @tongtien - tienVoucher; // công thức tính tổng tiền **********************
+                    if (total < 0) {
+                        total = 0
+                    }
+                    document.getElementById("total").innerHTML = total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                },
+                error: function (reponse) {
+                    alert(reponse.responseText);
+                }
+            });
+        });
+
+    });
+
+    function createhoadon() {
+        var ten = $("#name").val();
+        var sdt = $("#phone").val();
+        var tinh = $("#province option:selected").text().trim();
+        var huyen = $("#district option:selected").text().trim();
+        var xa = $("#ward option:selected").text().trim();
+        var diachi = $("#address").val();
+        var pttt = $('input[name="pttt"]:checked').val();
+        var ghiChu = $("#note").val();
+        $('.invalid-feedback').text('');
+        $('.is-invalid').removeClass('is-invalid');
+        var hasError = false;
+        if (ten.trim().length == 0) {
+            $('#name').addClass('is-invalid');
+            $('#name').next('.invalid-feedback').text('Không để trống tên');
+            hasError = true;
+        }
+        var phoneNumberRegex = /^\d{10}$/;
+        if (sdt.trim().length == 0) {
+            $('#phone').addClass('is-invalid');
+            $('#phone').next('.invalid-feedback').text('Không để trống sdt');
+            hasError = true;
+        }
+        else if (!phoneNumberRegex.test(sdt)) {
+            $('#phone').addClass('is-invalid');
+            $('#phone').next('.invalid-feedback').text('Số điện thoại không hợp lệ');
+            hasError = true;
+        }
+        if (diachi.trim().length == 0) {
+            $('#address').addClass('is-invalid');
+            $('#address').next('.invalid-feedback').text('Không để trống địa chỉ');
+            hasError = true;
+        }
+        if (pttt == undefined) {
+            $('#pttt-error').show(); // Hiển thị thông báo lỗi
+            hasError = true;
+        } else {
+            $('#pttt-error').hide(); // Ẩn thông báo lỗi
+        }
+        if (hasError) {
+            alert("Vui long dien day du thong tin");
+        }
+        else {
+            var objHoaDon = { RecipientName: ten, RecipientPhone: sdt, RecipientAddress: diachi + ", " + xa + ", " + huyen + ", " + tinh, ShippingFee: tienShip, PaymentType: pttt, VoucherId: VoucherId, TotalAmout: tienShip + @tongtien, VoucherValue: tienVoucher, TotalAmoutAfterApplyingVoucher: tienShip + @tongtien - tienVoucher, Description: ghiChu };
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn đặt đơn hàng?',
+                text: 'Hành động này sẽ không thể hoàn tác!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        async: false,
+                        type: 'POST',
+                        dataType: 'text',
+                        url: '/Bill/CheckOut',
+                        data: objHoaDon,
+                        success: function (response) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Đặt hàng thành công',
+                                showConfirmButton: true,
+                                timer: 1500
+                            }).then(function () {
+                                // Chuyển hướng sau khi xác nhận
+                                window.location.href = response; // Thay đổi '/your/target/url' bằng URL bạn muốn chuyển hướng đến
+                            });
+                        },
+                        error: function (response) {
+                            alert("Error");
+                        }
+                    });
+                }
+            });
+        }
+    }
+    ;
+    function usevoucher() {
+        value = $("#voucher").val();
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'json',
+            url: '/Bill/UseVoucher',
+            data: { ma: value, tongTien: @tongtien},
+            success: function (response) {
+                console.log(response);
+                voucher = value;
+                VoucherId = String(response.voucherId);
+                if (response.trangThai == true) {
+                    if (response.hinhThuc == 1) { // theo %
+                        var checktien = (@tongtien * response.giaTri) / 100;
+                        if (checktien > response.maxDiscountAmount) {
+                            tienVoucher = response.maxDiscountAmount;
+                        }
+                        else {
+                            tienVoucher = checktien;
+                        }
+                    }
+                    else if (response.hinhThuc == 0) { // theo tiền mặt
+                        tienVoucher = response.maxDiscountAmount;
+                    }
+                    var ipVoucher = document.getElementById("moneyvoucher");
+                    ipVoucher.hidden = false;
+                    ipVoucher.innerHTML = "Số tiền giảm (Voucher)<span>" + tienVoucher.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) + " </span>";
+                    var total = tienShip + @tongtien-tienVoucher;
+                    if (total < 0) {
+                        total = 0
+                    }
+                    document.getElementById("total").innerHTML = total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+                }
+                else {
+                    alert(response.loi);
+                }
+            },
+            error: function (response) {
+                alert("Error");
+            }
+        });
+    }
+</script>

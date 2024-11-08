@@ -1,0 +1,55 @@
+﻿@model IEnumerable<BanQuanAo.Share.Models.Size>
+
+@{
+    ViewData["Title"] = "Show";
+    Layout = "~/Areas/Admin/Shared/_LayoutAdmin.cshtml";
+}
+
+<h4>Danh sách size</h4>
+<div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+          <li class="breadcrumb-item active"><a asp-action="Show">Danh sách size</a></li>
+        </ul>
+</div>
+<p>
+    <a asp-action="Create" class="btn btn-success m-1" >Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên size
+            </th>
+            @* <th>
+                Chiều rộng
+            </th>
+            <th>
+                Chiều cao
+            </th>
+            <th>Chức năng</th> *@
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+
+            <td >
+                @Html.DisplayFor(modelItem => item.SizeName)
+            </td>
+           @*  <td >
+                @Html.DisplayFor(modelItem => item.Width)
+            </td>
+            <td >
+                @Html.DisplayFor(modelItem => item.Height)
+            </td> *@
+            <td >
+                <a class="btn btn-primary btn-sm " type="button" href="Update/@item.Id" title="Sửa"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-warning btn-sm"  type="button" href="Details/@item.Id" title="Chi tiết"><i class="fas fa-info-circle"></i></a>
+                <a class="btn btn-danger btn-sm " type="button" href="Remove/@item.Id" title="Xóa"><i class="fas fa-trash"></i></a>
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
