@@ -3,10 +3,7 @@
 ## Quản Lý Task ở Mục Project
 
 ### Video Giới Thiệu
-<iframe width="560" height="315" src="https://www.youtube.com/embed/sAC8Lr2PDro?start=45" 
-title="YouTube video player" frameborder="0" 
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-allowfullscreen></iframe>
+[![Watch the video](https://img.youtube.com/vi/sAC8Lr2PDro/0.jpg)](https://www.youtube.com/watch?v=sAC8Lr2PDro&t=45s)
 
 ### Mô Tả Yêu Cầu Phần Mềm
 - [Yêu cầu phần mềm](https://docs.google.com/document/d/14T5wWFPC1_lfGNGU8dA1Dc5dZjJlUmwuy3W58yTvnv8/edit)
