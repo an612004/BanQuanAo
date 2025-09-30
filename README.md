@@ -1,6 +1,12 @@
-# Dự Án Quản Lý Website Bán Quần Áo
+# Dự Án Quản Lý Website Bán Quần Áo 
 
 ## Quản Lý Task ở Mục Project
+
+### Video Giới Thiệu
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sAC8Lr2PDro?start=45" 
+title="YouTube video player" frameborder="0" 
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+allowfullscreen></iframe>
 
 ### Mô Tả Yêu Cầu Phần Mềm
 - [Yêu cầu phần mềm](https://docs.google.com/document/d/14T5wWFPC1_lfGNGU8dA1Dc5dZjJlUmwuy3W58yTvnv8/edit)
@@ -34,4 +40,3 @@
 - Đây là website quản lý cửa hàng bán quần áo (chủ yếu dành cho nam).
 - Dự án này được thực hiện và quản lý bởi **Ho binh An**.
 - Góp ý xin liên hệ: [hobinhan321@gmail.com](mailto:hobinhan321@gmail.com).
-
